@@ -7,4 +7,4 @@
 - run `npx prisma generate`
 
 ## 3 - Start
-- run `npm run start`
+- run `npm run dev`
