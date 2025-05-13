@@ -15,9 +15,14 @@
   justify-items: center;
   padding: 0 36px;
 }
-main {
-  padding-top: 64px;
-  max-width: 640px;
+
+body {
+  /* border: #000 solid 1px; */
+  width: 400px;
+}
+
+#root {
+  width: 100%;
 }
 
 a {
@@ -72,4 +77,26 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* ======================================== */
+
+.authlayout {
+  .MuiButtonBase-root.MuiToggleButtonGroup-grouped {
+    outline: none;
+    &.Mui-error {
+      background-color: white;
+      color: #000;
+      &.Mui-selected {
+        background-color: #cc0900;
+        color: #fff;
+      }
+    }
+  }
+ .login{
+   .MuiButtonBase-root.MuiButton-root {
+    background-color: #cc0900;
+    color: #fff;  
+  }
+ }
 }
