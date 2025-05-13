@@ -1,9 +1,15 @@
 import "./style/global.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
 
 const App = () => {
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-red-500">Hello World</h1>
+        <Router>
+            <Routes>
+                <Route path="/" element={<TalkManagement />} />
+            </Routes>
+        </Router>
     </>
   );
 };
