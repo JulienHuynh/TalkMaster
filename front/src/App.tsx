@@ -1,10 +1,11 @@
 import "./style/global.css";
+import CreateTalk from "./pages/CreateTalk";
 
 const App = () => {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline text-red-500">Hello World</h1>
-    </>
+    <div>
+      <CreateTalk />
+    </div>
   );
 };
 
