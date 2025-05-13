@@ -1,15 +1,15 @@
 import "./style/global.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
-import CreateTalk from "./pages/CreateTalk.tsx";
+import Homepage from "./components/auth/Homepage.tsx";
+import Login from "./components/auth/Login.tsx";
 
 const App = () => {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<TalkManagement />} />
-          <Route path="/create-talk" element={<CreateTalk />} />
+          <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </>
