@@ -17,52 +17,52 @@ model User {
   role      String     @default("public")
   firstName String?
   lastName  String?
-  Task      Task[]
+  Talk      Talk[]
   Favorite  Favorite[]
   Slot      Slot[]
 }
 
 model Favorite {
-  id        String   @id
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  Talk      Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId    String
+  talk      Talk     @relation(fields: [talkId], references: [id], onDelete: Cascade)
+  talkId    Int
 }
 
 model Room {
-  id        String   @id
+  id        Int      @id @default(autoincrement())
   name      String
   createdAt DateTime @default(now())
-  updatedAt DateTime
-  Task      Task[]
+  updatedAt DateTime @updatedAt
+  Talk      Talk[]
   Slot      Slot[]
 }
 
-model Task {
-  id          String   @id
+model Talk {
+  id Int @id @default(autoincrement())
+
   title       String
   description String?
-  status      String   @default("pending")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime
-
-  Room     Room?      @relation(fields: [Roomid], references: [id], onDelete: Cascade)
-  Roomid   String?
-  User     User?      @relation(references: [id], fields: [userId], onDelete: Cascade)
-  userId   String?
-  Favorite Favorite[]
+  status      String     @default("pending")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  room        Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId      Int
+  user        User       @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId      String
+  Favorite    Favorite[]
 }
 
 model Slot {
   id         Int      @id @default(autoincrement())
   duration   Int
   date       DateTime
-  room       Room?    @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  roomId     String?
-  reservedBy User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String?
+  room       Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId     Int
+  reservedBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
   createdAt  DateTime @default(now())
 }
