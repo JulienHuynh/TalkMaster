@@ -1,11 +1,18 @@
 import "./style/global.css";
-import CreateTalk from "./pages/CreateTalk";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
+import CreateTalk from "./pages/CreateTalk.tsx";
 
 const App = () => {
   return (
-    <div>
-      <CreateTalk />
-    </div>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<TalkManagement />} />
+          <Route path="/create-talk" element={<CreateTalk />} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 
