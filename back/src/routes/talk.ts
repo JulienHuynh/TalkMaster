@@ -51,7 +51,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
   });
 
   //Talk Modification
-  router.put('/:id', async (req: Request<{ id: number, title: string, description: string, status: string, roomId: number, userId: string }>, res: any) => {
+  router.put('/:id', async (req: Request<{ id: string, title: string, description: string, status: string, roomId: number, userId: string }>, res: any) => {
     const { id } = req.params;
     const { title, description, roomId, status, userId } = req.body;
 
@@ -59,7 +59,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       return res.status(400).json({ error: 'userId est requis pour modifier un talk' });
     }
 
-    const talk = await prisma.talk.findUnique({ where: { id: id } })
+    const talk = await prisma.talk.findUnique({ where: { id: Number(id) } })
 
     if (talk.userId !== userId) {
       return res.status(403).json({ error: 'Non autorisé à modifier ce talk' });
@@ -70,7 +70,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
     }
 
     await prisma.talk.update({
-      where: { id: id },
+      where: { id: Number(id) },
       data: {
         title,
         description,
@@ -87,7 +87,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
   });
 
   // Delete a Talk
-  router.delete('/:id', async (req: Request<{ id: number, userId: string }>, res: any) => {
+  router.delete('/:id', async (req: Request<{ id: string, userId: string }>, res: any) => {
     const { id } = req.params;
     const { userId } = req.body;
 
@@ -95,7 +95,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       return res.status(400).json({ error: 'userId est requis pour supprimer un talk' });
     }
 
-    const talk = await prisma.talk.findUnique({ where: { id: id } });
+    const talk = await prisma.talk.findUnique({ where: { id: Number(id) } });
 
     if (talk.userId !== userId) {
       return res.status(403).json({ error: 'Non autorisé à supprimer ce talk' });
@@ -106,7 +106,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
     }
 
 
-    await prisma.talk.delete({ where: { id } })
+    await prisma.talk.delete({ where: { id: Number(id) } })
       .then(() => {
         res.status(200).json({ message: 'Talk supprimé avec succès' });
       })

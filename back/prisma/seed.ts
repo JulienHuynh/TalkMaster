@@ -26,6 +26,8 @@ async function main() {
   const talk = await prisma.talk.create({
     data: {
       title: 'Introduction to Prisma',
+      duration: 1,
+      subject: 'Databases',
       description: 'How to use Prisma with TypeScript',
       status: 'confirmed',
       userId: user.id,
@@ -45,9 +47,9 @@ async function main() {
   await prisma.slot.create({
     data: {
       date: new Date(), // today
-      duration: 30,
       roomId: room.id,
       userId: user.id,
+      talkId: talk.id,
     },
   });
 
