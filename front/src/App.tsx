@@ -2,6 +2,7 @@ import "./style/global.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./components/auth/Homepage.tsx";
 import Login from "./components/auth/Login.tsx";
+import CreateTalk from "./pages/CreateTalk.tsx";
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/create-talk" element={<CreateTalk />} />
         </Routes>
       </Router>
     </>
