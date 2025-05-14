@@ -88,7 +88,7 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
               label="Name"
               variant="outlined"
               sx={fieldSx}
-              value={talk?.title || defaultTalk.title}
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </FormControl>
@@ -100,7 +100,7 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
               select
               variant="outlined"
               sx={fieldSx}
-              value={talk?.subject || defaultTalk.subject}
+              value={subject}
               onChange={(e) => setSubject(e.target.value)}
             >
               <MenuItem value="tech">Technology</MenuItem>
@@ -114,7 +114,7 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Date"
-                value={dayjs(talk?.date || defaultTalk.date)}
+                value={date ? dayjs(date) : null}
                 onChange={(newVal) => setDate(newVal?.toISOString() || null)}
                 slotProps={{
                   textField: {
@@ -135,7 +135,7 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
               rows={4}
               variant="outlined"
               sx={fieldSx}
-              value={talk?.description || defaultTalk.description}
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </FormControl>
