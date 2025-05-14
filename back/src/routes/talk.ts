@@ -25,7 +25,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
   });
 
   router.get('/:id', async (req: Request<{ id: string; }>, res: any) => {
-    const { id } = req.params;
+    const { id } = req.params; 
     const talk = await prisma.talk.findUnique({
       where: {
         id: Number(id),
