@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 
-const Talk = () => {
+export const Talk = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-xl font-bold mb-8 text-white">
@@ -21,7 +21,7 @@ const Talk = () => {
           <span className="text-white">Créer un talk</span>
         </Link>
         <Link
-          to="/edit-talk"
+          to="/talk-list"
           className="bg-white text-black py-3 px-6 rounded-lg flex items-center 
                    transition-transform hover:scale-105 active:scale-95"
         >
@@ -32,4 +32,3 @@ const Talk = () => {
   );
 };
 
-export default Talk;
