@@ -2,7 +2,6 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import backgroundImage from '../../../public/conference.jpg';
 import { IoMdCheckmark } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import type { Talk } from "../../types/Talk.ts";
@@ -32,7 +31,7 @@ const TalkCard: React.FC<TalkCardProps> = ({ talk, ValidateTalk, DeclineTalk, to
         <Card sx={{
             minWidth: 275,
             marginBottom: 3,
-            backgroundImage: `url(${backgroundImage})`,
+            backgroundImage: `url("conference.jpg")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             color: 'white',
