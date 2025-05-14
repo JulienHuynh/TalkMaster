@@ -6,6 +6,7 @@ import { defaultTalk } from "./constante/talk.ts";
 import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
+import TalkTraking from "./pages/talk-traking.tsx";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
               path="/edit-talk/:id"
               element={<CreateTalk talk={defaultTalk} />}
             />
+            <Route path="/talk-traking" element={<TalkTraking />} />
           </Routes>
         </Router>
       </div>
