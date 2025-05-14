@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { AuthenticatedRequest } from '../middleware/auth';
 
 export default function talksRoutes(prisma: PrismaClient): Router {
   const router = Router();
