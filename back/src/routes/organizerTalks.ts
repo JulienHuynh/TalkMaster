@@ -5,8 +5,7 @@ export default function organizerTalksRoute(prisma: PrismaClient): Router {
 
   const router = Router();
 
-  // Route pour update le status d'un talk"
-  router.post('/:id/update', async (req: Request<{ id: string, status: string }>, res) => {
+  router.patch('/:id', async (req: Request<{ id: string, status: string }>, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
