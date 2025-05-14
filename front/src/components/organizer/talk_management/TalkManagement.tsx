@@ -39,6 +39,43 @@ const TalkManagement: React.FC = () => {
     }
 
     useEffect(() => {
+        const fakeTalk: Talk = {
+            id: 1,
+            title: 'Conférence Test',
+            description: 'Une conférence fictive pour test',
+            duration: 30,
+            subject: 'Développement',
+            status: 'pending',
+            date: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            roomId: 1,
+            userId: 'abc-123',
+            room: {
+                id: 1,
+                name: 'Salle A',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                Talk: [],
+                Slot: [],
+            },
+            user: {
+                id: 'abc-123',
+                email: 'test@example.com',
+                password: null,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                role: 'public',
+                firstName: 'John',
+                lastName: 'Doe',
+                Talk: [],
+                Favorite: [],
+                Slot: [],
+            },
+            Favorite: [],
+            Slot: [],
+        };
+        setTalkRequests([fakeTalk]);
         getTalkRequests();
     }, []);
 
