@@ -7,6 +7,7 @@ import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
 import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Profile } from "./pages/profile.tsx";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => {
               <Route path="/talk-list" element={<TalkList />} />
               <Route path="/edit-talk/:id" element={<CreateTalk />} />
               <Route path="/talk-management" element={<TalkManagement />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </Router>
         </QueryClientProvider>
