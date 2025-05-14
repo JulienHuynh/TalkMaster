@@ -1,13 +1,16 @@
 import "./style/global.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
-import Homepage from "./components/auth/Homepage.tsx";
+import Homepage from "./pages/Homepage.tsx";
 import Login from "./components/auth/Login.tsx";
 import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
 import { defaultTalk } from "./constante/talk.ts";
 import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
+import Management from "./components/organizer/Management.tsx";
+import Overview from "./components/organizer/Overview.tsx";
+import Planning from "./components/organizer/Planning.tsx";
 
 const App = () => {
   return (

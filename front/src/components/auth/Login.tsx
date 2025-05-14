@@ -28,6 +28,22 @@ const Login: FC = () => {
     password: "",
   });
 
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAuthMethod: string
+  ) => {
+    if (newAuthMethod !== null) {
+      setAuthMethod(newAuthMethod);
+    }
+  };
+
+  const handleLogin = () => {
+    if (authMethod === "organizer") {
+      window.location.href = "/organizer/management";
+    } else {
+      window.location.href = "/talk";
+    }   
+  };
   return (
     <AuthLayout>
       {privateAuth && (
@@ -100,6 +116,16 @@ const Login: FC = () => {
               </Button>
             </form>
           </div>
+          <Button
+            className="w-full"
+            size="large"
+            variant="contained"
+            onClick={() => {
+              handleLogin();
+            }}
+          >
+            Valider
+          </Button>
           <Typography className="text-center">
             Pas de compte ?<a href="/"> Inscrivez-vous !</a>
           </Typography>

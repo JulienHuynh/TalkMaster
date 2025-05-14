@@ -1,10 +1,16 @@
+import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import type * as React from "react";
-import { IoMdCheckmark } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
+import backgroundImage from "../../../public/conference.jpg";
 import type { Talk } from "../../types/Talk.ts";
+import IconButton from "@mui/material/IconButton";
+import { TbCircleNumber1Filled } from "react-icons/tb";
+import { TbCircleNumber2Filled } from "react-icons/tb";
+import { TbCircleNumber3Filled } from "react-icons/tb";
+import { TbCircleNumber4Filled } from "react-icons/tb";
+import { TbCircleNumber5Filled } from "react-icons/tb";
+import { Button } from "@mui/material";
 
 interface TalkCardProps {
   talk: Talk;
@@ -14,34 +20,57 @@ interface TalkCardProps {
 
 const TalkCard: React.FC<TalkCardProps> = ({
   talk,
-  handleTalkState,
+  ValidateTalk,
+  DeclineTalk,
   toValidate = false,
 }) => {
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleCardClick = () => {
+    setExpanded((prev) => !prev);
+  };
+
   const convertDuration = (duration: number) => {
     const minutesDuration = duration * 15;
     const minutesLeft = minutesDuration % 60;
     const hourNumber = Math.floor(minutesDuration / 60);
 
     if (hourNumber > 0) {
-      return `${hourNumber}h${minutesLeft}`;
+      return hourNumber + "h" + minutesLeft;
     }
 
-    return `${minutesDuration}m`;
+    return minutesDuration + "m";
   };
 
   return (
     <Card
+      className="talk-card"
       sx={{
+        position: "relative",
         minWidth: 275,
+        width: "100%",
+        borderRadius: 5,
         marginBottom: 3,
-        backgroundImage: `url("conference.jpg")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        color: "white",
+        overflow: "hidden",
       }}
+      onClick={handleCardClick}
       key={talk.id}
     >
-      <CardContent>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          height: "100%",
+          width: "100%",
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.5)", // adjust brightness here (0 to 1)
+          zIndex: 0,
+        }}
+      />
+      <CardContent sx={{ position: "relative", zIndex: 1, color: "white" }}>
         <div className={"flex items-center justify-between"}>
           <div>
             <Typography variant="h5" component="div">
@@ -54,29 +83,69 @@ const TalkCard: React.FC<TalkCardProps> = ({
               {convertDuration(talk.duration)}
             </Typography>
           </div>
-          {toValidate && (
-            <div className={"flex"}>
-              {handleTalkState && (
-                <>
-                  <button
-                    type="button"
-                    className="bg-white rounded-full p-1 mr-5"
-                    onClick={() => handleTalkState(true, talk.id)}
-                  >
-                    <IoMdCheckmark size={24} className={"text-green-500"} />
-                  </button>
-                  <button
-                    type="button"
-                    className={"bg-white rounded-full p-1"}
-                    onClick={() => handleTalkState(false, talk.id)}
-                  >
-                    <RxCross2 size={24} className={"text-red-500"} />
-                  </button>
-                </>
+        </div>
+
+        {expanded && toValidate && (
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-row align-items-center justify-center">
+              <div className="flex flex-row mr-5">
+                Début :<p className="font-bold">{"start-time"}</p>
+              </div>
+              <div className="flex flex-row mr-5">
+                Fin :<p className="font-bold">{"start time + duration"}</p>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center">
+              <p>Salles disponibles</p>
+              <div className="flex flex-wrap justify-center mt-2">
+                {/* utilise les icon pour le map des 5 room */}
+                <div className="flex flex-row gap-2">
+                  <IconButton sx={{ padding: 0 }}>
+                    <TbCircleNumber1Filled size="30" color="white" />
+                  </IconButton>
+                  <IconButton sx={{ padding: 0 }}>
+                    <TbCircleNumber2Filled size="30" color="white" />
+                  </IconButton>
+                  <IconButton sx={{ padding: 0 }}>
+                    <TbCircleNumber3Filled size="30" color="white" />
+                  </IconButton>
+                  <IconButton sx={{ padding: 0 }}>
+                    <TbCircleNumber4Filled size="30" color="white" />
+                  </IconButton>
+                  <IconButton sx={{ padding: 0 }}>
+                    <TbCircleNumber5Filled size="30" color="white" />
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={"flex gap-2 w-full justify-center"}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {ValidateTalk && (
+                <Button
+                  className={
+                    "bg-white rounded-full p-1 mr-5 cursor-pointer validated w-1/3"
+                  }
+                  onClick={() => ValidateTalk(talk.id)}
+                >
+                  Valider
+                </Button>
+              )}
+              {DeclineTalk && (
+                <Button
+                  className={
+                    "bg-white rounded-full p-1 cursor-pointer declined w-1/3"
+                  }
+                  onClick={() => DeclineTalk(talk.id)}
+                >
+                  Refuser
+                </Button>
               )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
