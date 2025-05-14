@@ -1,18 +1,18 @@
 import { Router, Request } from 'express';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { AuthenticatedRequest, authMiddleware } from '../middleware/auth';
+import jwt from 'jsonwebtoken';
 
 export default function usersRoutes(prisma: PrismaClient): Router {
   const router = Router();
 
-  router.get('/', authMiddleware, async (_, res) => {
+  router.get('/', async (req, res) => {
     const users = await prisma.user.findMany();
     res.json(users);
   });
 
-  router.post('/signup', async (req: Request<{ email: string, password: string, firstName: string, lastName: string }>, res: any) => {
+  router.post('/', async (req: Request<{ email: string, password: string, firstName: string, lastName: string }>, res: any) => {
     const { email, password, firstName, lastName } = req.body;
 
     const existingUser = await prisma.user.findUnique({
