@@ -9,6 +9,21 @@ export default function talksRoutes(prisma: PrismaClient): Router {
     res.json(talks);
   });
 
+  router.get('/pending-requests', async (_, res) => {
+    try {
+      const talksPending = await prisma.talk.findMany({
+        where: {
+          status: 'pending',
+        },
+      });
+
+      res.json(talksPending);
+    } catch (err) {
+      console.error('Erreur lors de la récupération des talks en statut "pending":', err);
+      res.status(500).json({ error: 'Impossible de récupérer les talks en statut "pending"' });
+    }
+  });
+
   router.get('/:id', async (req: Request<{ id: string; }>, res: any) => {
     const { id } = req.params;
     const talk = await prisma.talk.findUnique({
