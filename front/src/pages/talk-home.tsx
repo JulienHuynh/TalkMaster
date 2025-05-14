@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 
 export const Talk = () => {
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-xl font-bold mb-8 text-white">
