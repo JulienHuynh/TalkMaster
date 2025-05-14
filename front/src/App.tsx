@@ -26,6 +26,7 @@ const App = () => {
               path="/edit-talk/:id"
               element={<CreateTalk talk={defaultTalk} />}
             />
+            
             <Route path="/talk-traking" element={<TalkTraking />} />
           </Routes>
         </Router>

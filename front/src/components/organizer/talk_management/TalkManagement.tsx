@@ -1,39 +1,90 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import {useEffect, useState} from "react";
+import type {Talk} from "../../../types/Talk.ts";
+import useGetTalkRequests from "../../../hooks/useGetTalkRequests.ts";
+import useValidateTalk from "../../../hooks/useValidateTalk.ts";
+import useDeclineTalk from "../../../hooks/useDeclineTalk.ts";
+import TalkCard from "../../card/TalkCard.tsx";
 
 const TalkManagement: React.FC = () => {
+    const [talkRequests, setTalkRequests] = useState<Talk[]>([]);
+    const getTalks = useGetTalkRequests();
+
+    const ValidateTalk = (talkID: number) => {
+        useValidateTalk(talkID).then(() => {
+            const updatedTalks = talkRequests.filter(talk => talk.id !== talkID);
+            setTalkRequests(updatedTalks);
+        }).catch((err) => {
+            console.error('Erreur lors de la validation du talks', err);
+        });
+    }
+
+    const DeclineTalk = (talkID: number) => {
+        useDeclineTalk(talkID).then(() => {
+            const updatedTalks = talkRequests.filter(talk => talk.id !== talkID);
+            setTalkRequests(updatedTalks);
+        }).catch((err) => {
+            console.error('Erreur lors du refus du talks', err);
+        });
+    }
+
+    const getTalkRequests = () => {
+        getTalks()
+            .then((data) => {
+                setTalkRequests(data);
+            })
+            .catch((err) => {
+                console.error('Erreur de récupération des talks', err);
+            });
+    }
+
+    useEffect(() => {
+        const fakeTalk: Talk = {
+            id: 1,
+            title: 'Conférence Test',
+            description: 'Une conférence fictive pour test',
+            duration: 30,
+            subject: 'Développement',
+            status: 'pending',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            roomId: 1,
+            userId: 'abc-123',
+            room: {
+                id: 1,
+                name: 'Salle A',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                Talk: [],
+                Slot: [],
+            },
+            user: {
+                id: 'abc-123',
+                email: 'test@example.com',
+                password: null,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                role: 'public',
+                firstName: 'John',
+                lastName: 'Doe',
+                Talk: [],
+                Favorite: [],
+                Slot: [],
+            },
+            Favorite: [],
+            Slot: [],
+        };
+        setTalkRequests([fakeTalk]);
+        getTalkRequests();
+    }, []);
+
     return (
-        <div className={"border "}>
+        <div>
             <div className={"flex-col items-center"}>
                 <h1 className="text-3xl font-bold underline text-center mb-5">Demandes de talks</h1>
-                <Card sx={{minWidth: 275, marginBottom: 3}}>
-                    <CardContent>
-                        <Typography variant="h5" component="div">
-                            TALK 1
-                        </Typography>
-                        <Typography sx={{color: 'text.secondary', mb: 1.5}}>Sujet 1</Typography>
-                        <Typography variant="body2">
-                            12/02/2025
-                            <br/>
-                            14:30 - 15:00
-                        </Typography>
-                    </CardContent>
-                </Card>
-                <Card sx={{minWidth: 275, marginBottom: 3}}>
-                    <CardContent>
-                        <Typography variant="h5" component="div">
-                            TALK 1
-                        </Typography>
-                        <Typography sx={{color: 'text.secondary', mb: 1.5}}>Sujet 1</Typography>
-                        <Typography variant="body2">
-                            12/02/2025
-                            <br/>
-                            14:30 - 15:00
-                        </Typography>
-                    </CardContent>
-                </Card>
+                { talkRequests.length > 0 ? talkRequests.map((talk) =>
+                    <TalkCard talk={talk} toValidate={true} DeclineTalk={DeclineTalk} ValidateTalk={ValidateTalk}></TalkCard>
+                ) : <div>Aucun talk demandé...</div>}
             </div>
         </div>
     );
