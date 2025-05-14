@@ -4,14 +4,17 @@ import { PrismaClient } from '@prisma/client';
 export default function slotsRoutes(prisma: PrismaClient): Router {
     const router = Router();
 
-    router.get('/', async (req: Request<{roomId: string, date: string }>, res: any) => {
-        const { roomId, date } = req.query;
+    router.get('/', async (req: Request<{ roomId: string, date: string, duration: string }>, res: any) => {
+        const { roomId, date, duration } = req.query;
 
         if (!roomId || !date) return res.status(400).json({ error: 'roomId and date are required' });
 
         if (typeof date !== 'string') return res.status(400).json({ error: 'Invalid date format' });
 
+
+
         const baseDate = new Date(date);
+        const indexSlot = Math.floor((baseDate.getHours() * 60 + baseDate.getMinutes()) / 15);
         baseDate.toLocaleString('fr-FR', {
             timeZone: 'Europe/Paris',
         });
@@ -36,13 +39,14 @@ export default function slotsRoutes(prisma: PrismaClient): Router {
         );
 
         const result = Array.from({ length: 96 }, (_, i) => {
+            if (i < indexSlot || i > indexSlot + Number(duration)) return null;
             const time = new Date(baseDate.getTime() + i * 15 * 60 * 1000);
             return {
                 index: i,
                 time,
                 isTaken: takenIndexes.has(i),
             };
-        });
+        }).filter(Boolean);
 
         res.json(result);
     });
