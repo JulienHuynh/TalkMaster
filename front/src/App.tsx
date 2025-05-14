@@ -25,6 +25,7 @@ const App = () => {
               path="/edit-talk/:id"
               element={<CreateTalk talk={defaultTalk} />}
             />
+            
           </Routes>
         </Router>
       </div>
