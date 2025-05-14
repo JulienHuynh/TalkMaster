@@ -1,7 +1,6 @@
 import React from "react";
-import { MessageSquare, Bell } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-
+import { IoChatbubblesOutline, IoNotificationsOutline } from "react-icons/io5";
 const Footer: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
@@ -16,7 +15,7 @@ const Footer: React.FC = () => {
               currentPath === "/talks" ? "text-white" : "text-gray-400"
             }`}
           >
-            <MessageSquare size={24} />
+            <IoChatbubblesOutline size={24} />
             <span className="text-sm">Talk</span>
           </Link>
 
@@ -26,7 +25,7 @@ const Footer: React.FC = () => {
               currentPath === "/notifications" ? "text-white" : "text-gray-400"
             }`}
           >
-            <Bell size={24} />
+            <IoNotificationsOutline size={24} />
             <span className="text-sm">Suivi</span>
           </Link>
         </div>

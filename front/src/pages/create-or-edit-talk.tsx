@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { IoChevronBack } from "react-icons/io5";
 import type { CreateTalkProps } from "../types/Talk";
 import Navbar from "../components/talk/navbar";
 import Footer from "../components/talk/footer";
@@ -7,7 +7,6 @@ import useCreateTalk from "../hooks/useCreateTalk";
 import { TalkForm } from "../components/talk/talk-form";
 import { useGetTalk } from "../hooks/useGetTalkRequests";
 import { defaultTalk } from "../constante/talk";
-
 
 export const CreateTalk = () => {
   const { createTalk } = useCreateTalk();
@@ -38,7 +37,7 @@ export const CreateTalk = () => {
         <div className="absolute top-20 left-20 right-0">
           {isCreatePage ? (
             <Link to="/talk" className="text-white p-2 rounded-full mr-2 ">
-              <ChevronLeft size={24} />
+              <IoChevronBack size={24} />
             </Link>
           ) : null}
           <div className="flex flex-col items-center justify-center mt-2">

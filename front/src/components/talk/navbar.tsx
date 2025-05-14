@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronLeft, User } from "lucide-react";
+import { IoChevronBack, IoPersonCircle } from "react-icons/io5";
 import { HiMiniUserGroup } from "react-icons/hi2";
 import { Typography } from "@mui/material";
 
@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
               to="/"
               className="text-white p-2 rounded-full hover:bg-gray-700 mr-2 transition-colors"
             >
-              <ChevronLeft size={24} />
+              <IoChevronBack size={24} />
             </Link>
           ) : null}
           <div className="flex items-center gap-2">
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
           </div>
         </div>
         <div className="bg-gray-700 rounded-full p-2 hover:bg-gray-600 transition-colors">
-          <User size={24} className="text-white" />
+          <IoPersonCircle size={24} className="text-white" />
         </div>
       </div>
     </div>

@@ -2,7 +2,6 @@ import "./style/global.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./components/auth/Homepage.tsx";
 import Login from "./components/auth/Login.tsx";
-import { defaultTalk } from "./constante/talk.ts";
 import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import type { Talk } from "../types/Talk";
-import { ChevronLeft, Pencil, Trash2 } from "lucide-react";
+import { IoChevronBack, IoPencil, IoTrash } from "react-icons/io5";
 import Navbar from "../components/talk/navbar";
 import useGetTalkRequests from "../hooks/useGetTalkRequests";
 import { useEffect, useState } from "react";
@@ -49,7 +49,7 @@ export const TalkList = () => {
       <div className="mt-20">
         <div>
           <Link to="/talk" className="text-white rounded-full">
-            <ChevronLeft size={24} />
+            <IoChevronBack size={24} />
           </Link>
         </div>
         <Typography variant="h4" component="h2" className="text-center pb-4">
@@ -138,7 +138,7 @@ export const TalkList = () => {
                     },
                   }}
                 >
-                  <Pencil size={20} />
+                  <IoPencil size={20} />
                 </IconButton>
                 <IconButton
                   onClick={(e) => handleDelete(e, talk.id)}
@@ -150,7 +150,7 @@ export const TalkList = () => {
                     },
                   }}
                 >
-                  <Trash2 size={20} />
+                  <IoTrash size={20} />
                 </IconButton>
               </Box>
             </Card>
