@@ -1,0 +1,46 @@
+name: Deploy Express App (Self-Hosted)
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: ./back
+        run: npm install
+
+      - name: Generate .env file
+        working-directory: ./back
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "NODE_ENV=production" >> .env
+          echo "PORT=3000" >> .env
+
+      - name: Prisma generate
+        working-directory: ./back
+        run: npx prisma generate
+
+      - name: Prisma migrate deploy
+        working-directory: ./back
+        run: npx prisma migrate deploy
+
+      - name: Build project (TypeScript only)
+        working-directory: ./back
+        run: npm run build
+
+      - name: Restart Express server (PM2)
+        working-directory: ./back
+        run: |
+          pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js
