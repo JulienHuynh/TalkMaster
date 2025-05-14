@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
 export const Talk = () => {
@@ -34,4 +34,3 @@ export const Talk = () => {
     </div>
   );
 };
-

@@ -1,5 +1,5 @@
-import * as React from "react";
 import Typography from "@mui/material/Typography";
+import type * as React from "react";
 import { HiMiniUserGroup } from "react-icons/hi2";
 import { useLocation } from "react-router-dom";
 
@@ -10,6 +10,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       {location.pathname !== "/" && (
         <div className="flex justify-start w-full">
           <button
+            type="button"
             onClick={() => {
               window.history.back();
             }}
