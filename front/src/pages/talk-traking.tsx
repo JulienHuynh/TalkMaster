@@ -8,7 +8,8 @@ import {
   Button,
   ButtonGroup,
 } from "@mui/material";
-import { Circle } from "lucide-react";
+import { FaCircle } from "react-icons/fa";
+
 
 interface Talk {
   id: string;
@@ -151,7 +152,7 @@ const TalkTracking = () => {
             />
             <CardContent>
               <Box className="flex items-center gap-2 mb-2">
-                <Circle
+                <FaCircle
                   size={12}
                   fill={statusColors[talk.status]}
                   color={statusColors[talk.status]}

@@ -8,7 +8,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { fieldSx } from "../utils/helper";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { IoChevronBack } from "react-icons/io5";
 import type { TalkProps } from "../type/talk.type";
 import { defaultTalk } from "../constante/talk";
 
@@ -54,7 +54,7 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
       <div>
         {isCreatePage || isEditPage ? (
           <Link to="/talk" className="text-white p-2 rounded-full mr-2 ">
-            <ChevronLeft size={24} />
+            <IoChevronBack size={24} />
           </Link>
         ) : null}
       </div>

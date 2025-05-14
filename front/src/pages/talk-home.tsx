@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { IoAdd } from "react-icons/io5";
 
 export const Talk = () => {
   return (
@@ -17,7 +17,7 @@ export const Talk = () => {
           className="bg-red-600 text-white py-3 px-6 rounded-lg flex items-center 
                    transition-transform hover:scale-105 active:scale-95"
         >
-          <Plus className="mr-2 text-white" size={20} />
+          <IoAdd className="mr-2 text-white" size={20} />
           <span className="text-white">Créer un talk</span>
         </Link>
         <Link
