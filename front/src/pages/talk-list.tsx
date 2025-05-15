@@ -9,48 +9,11 @@ import {
 import type { MouseEvent } from "react";
 import { IoChevronBack, IoPencil, IoTrash } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import type { TalkProps } from "../type/talk.type";
-
-const mockTalks: TalkProps[] = [
-  {
-    id: "1",
-    title: "Talk 1",
-    subject: "Sujet 1",
-    description: "Description 1",
-    date: "2024-03-20",
-  },
-  {
-    id: "2",
-    title: "Talk 2",
-    subject: "Sujet 2",
-    description: "Description 2",
-    date: "2024-03-21",
-  },
-  {
-    id: "3",
-    title: "Talk 3",
-    subject: "Sujet 3",
-    description: "Description 3",
-    date: "2024-03-22",
-  },
-  {
-    id: "4",
-    title: "Talk 4",
-    subject: "Sujet 4",
-    description: "Description 4",
-    date: "2024-03-23",
-  },
-  {
-    id: "5",
-    title: "Talk 5",
-    subject: "Sujet 5",
-    description: "Description 5",
-    date: "2024-03-24",
-  },
-];
+import { useGetTalks } from "../hooks/useGetTalkRequests";
 
 export const TalkList = () => {
   const navigate = useNavigate();
+  const { talkData } = useGetTalks();
 
   const handleEdit = (e: MouseEvent, id: string) => {
     e.stopPropagation();
@@ -74,7 +37,7 @@ export const TalkList = () => {
       </Typography>
 
       <Stack spacing={2}>
-        {mockTalks.map((talk) => (
+        {talkData?.map((talk) => (
           <Card
             key={talk.id}
             sx={{
@@ -146,7 +109,7 @@ export const TalkList = () => {
               }}
             >
               <IconButton
-                onClick={(e) => handleEdit(e, talk.id)}
+                onClick={(e) => handleEdit(e, talk.id.toString())}
                 sx={{
                   bgcolor: "primary.main",
                   color: "white",
@@ -158,7 +121,7 @@ export const TalkList = () => {
                 <IoPencil size={20} />
               </IconButton>
               <IconButton
-                onClick={(e) => handleDelete(e, talk.id)}
+                onClick={(e) => handleDelete(e, talk.id.toString())}
                 sx={{
                   bgcolor: "error.main",
                   color: "white",
