@@ -89,9 +89,9 @@ export default function slotsRoutes(prisma: PrismaClient): Router {
           .status(400)
           .json({ error: "Talk already has slots assigned" });
       }
-        // return res
-        //   .status(400)
-        //   .json({ error: "Talk already has slots assigned" });
+      // return res
+      //   .status(400)
+      //   .json({ error: "Talk already has slots assigned" });
 
       const baseDate = new Date(talk.date);
       baseDate.setHours(0, 0, 0, 0);
@@ -108,9 +108,7 @@ export default function slotsRoutes(prisma: PrismaClient): Router {
       });
 
       if (existingSlots.length > 0) {
-        throw new Error(
-          "One or more selected slots are already reserved",
-        );
+        throw new Error("One or more selected slots are already reserved");
         // return res
         //   .status(400)
         //   .json({ error: "One or more selected slots are already reserved" });

@@ -28,12 +28,9 @@ const Management: React.FC = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          enqueueSnackbar(
-            "Erreur lors du chargement des demandes de talk",
-            {
-              variant: "error",
-            },
-          );
+          enqueueSnackbar("Erreur lors du chargement des demandes de talk", {
+            variant: "error",
+          });
           return Promise.reject(
             "Erreur lors du chargement des demandes de talk",
           );
@@ -71,14 +68,16 @@ const Management: React.FC = () => {
       talkId,
       roomId,
       slotsIndex,
-    }).then(() => {
-      const updatedTalks = talkRequests.filter((talk) => talk.id !== talkId);
-      setTalkRequests(updatedTalks);
-    }).catch((error) => {
-      enqueueSnackbar(`${error}`, {
-        variant: "error",
+    })
+      .then(() => {
+        const updatedTalks = talkRequests.filter((talk) => talk.id !== talkId);
+        setTalkRequests(updatedTalks);
+      })
+      .catch((error) => {
+        enqueueSnackbar(`${error}`, {
+          variant: "error",
+        });
       });
-    });
   };
 
   return (

@@ -100,8 +100,9 @@ const Login: FC = () => {
           <Typography className="text-center">
             {!privateAuth
               ? "Connectez-vous afin de consulter les conférences à venir. "
-              : `Connectez-vous en tant que ${authMethod === "organizer" ? "organisateur" : "conférencier"
-              } afin d'organiser le programme.`}
+              : `Connectez-vous en tant que ${
+                  authMethod === "organizer" ? "organisateur" : "conférencier"
+                } afin d'organiser le programme.`}
           </Typography>
           <div className="flex flex-col gap-2 w-full">
             <form

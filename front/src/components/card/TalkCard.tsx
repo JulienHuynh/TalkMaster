@@ -131,8 +131,9 @@ const TalkCard: React.FC<TalkCardProps> = ({
         throw new Error("Token manquant dans les cookies");
       }
 
-      const url = `${import.meta.env.VITE_API_HOST
-        }/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
+      const url = `${
+        import.meta.env.VITE_API_HOST
+      }/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
 
       const response = await fetch(url, {
         method: "GET",
