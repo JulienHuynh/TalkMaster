@@ -1,0 +1,28 @@
+name: Frontend TypeScript Build
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # ou la version que tu utilises
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./front # ← change ce chemin si nécessaire
+
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+        working-directory: ./front
+
+      - name: Build project
+        run: npm run build
+        working-directory: ./front
