@@ -8,6 +8,7 @@ interface UseApiQueryOptions {
 }
 
 interface UseApiQueryResult<T> {
+  token: string;
   data: T | null;
   loading: boolean;
   error: string | null;
@@ -62,15 +63,23 @@ export function useApiQuery<T>(
       })
       .then((json) => {
         setData(json as T);
-        return { data: json as T, loading: false, error: null };
+        return { token: "", data: json as T, loading: false, error: null };
       })
       .catch((err) => {
         const message = err.message || "Une erreur est survenue";
         setError(message);
-        return { data: null, loading: false, error: message };
+        return { token: "", data: null, loading: false, error: message };
       })
       .finally(() => setLoading(false));
   };
 
-  return [fetchApi, { data, loading, error }];
+  return [
+    fetchApi,
+    {
+      data,
+      loading,
+      error,
+      token: "",
+    },
+  ];
 }
