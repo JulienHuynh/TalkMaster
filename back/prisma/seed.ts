@@ -25,6 +25,7 @@ async function main() {
     data: {
       title: "Introduction to Prisma",
       duration: 1,
+      date: new Date(), // today
       subject: "Databases",
       description: "How to use Prisma with TypeScript",
       status: "confirmed",
@@ -45,7 +46,6 @@ async function main() {
   await prisma.slot.create({
     data: {
       date: new Date(), // today
-      index: 1,
       roomId: room.id,
       userId: user.id,
       talkId: talk.id,
