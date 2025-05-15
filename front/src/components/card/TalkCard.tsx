@@ -8,6 +8,7 @@ import { fr } from "date-fns/locale";
 import type * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  MdLocationOn,
   MdOutlineAccessTime,
   MdOutlineCalendarToday,
   MdOutlineExpandMore,
@@ -100,13 +101,12 @@ const TalkCard: React.FC<TalkCardProps> = ({
   };
 
   // // Get selected room name
-  // const getSelectedRoomName = () => {
-  //   if (selectedSlot === null) return "";
-  //   const selectedSlotObj = availableSlots.find(
-  //     (slot) => slot.id === selectedSlot,
-  //   );
-  //   return selectedSlotObj?.room?.name || "";
-  // };
+  const getSelectedRoomName = () => {
+    const selectedRoom = availableRooms.find(
+      (room) => room.id === selectedSlot,
+    );
+    return selectedRoom ? `Salle ${selectedRoom.id}` : "Aucune salle sélectionnée";
+  };
 
   // Room icons
   const roomIcons = [
@@ -150,8 +150,6 @@ const TalkCard: React.FC<TalkCardProps> = ({
       }
 
       const data = await response.json();
-
-      // console.log(data);
 
       return data.map((slot: any) => ({
         index: slot.index,
@@ -215,40 +213,6 @@ const TalkCard: React.FC<TalkCardProps> = ({
       );
     }
   }, [roomData]);
-
-  // // Create a table of available slots for each room and getRoomSlots in
-  // const roomData = useMemo(() => {
-  //   const rooms = [
-  //     { id: 1, name: "Salle 1" },
-  //     { id: 2, name: "Salle 2" },
-  //     { id: 3, name: "Salle 3" },
-  //     { id: 4, name: "Salle 4" },
-  //     { id: 5, name: "Salle 5" },
-  //   ];
-
-  //   return Promise.all(
-  //     rooms.map(async (room) => {
-  //       try {
-  //         const slots = await getRoomSlots({
-  //           roomId: room.id,
-  //           date: talk.date,
-  //           duration: talk.duration,
-  //         });
-  //         return { ...room, slots };
-  //       } catch (error) {
-  //         console.error(
-  //           `Erreur lors de la récupération des créneaux pour ${room.name}:`,
-  //           error,
-  //         );
-  //         return { ...room, slots: [] };
-  //       }
-  //     }),
-  //   );
-  // }, [talk.date, talk.duration, getRoomSlots]);
-
-  // console.log("Room Data:", roomData);
-
-  // })
 
   return (
     <Card
@@ -440,17 +404,17 @@ const TalkCard: React.FC<TalkCardProps> = ({
                     </Typography>
                   )}
 
-                  {/* {selectedSlot !== null && (
+                  {selectedSlot !== null && (
                     <Chip
                       icon={<MdLocationOn />}
-                      label={`Salle sélectionnée: ${getSelectedRoomName()}`}
+                      label={getSelectedRoomName() || "Aucune salle sélectionnée"}
                       sx={{
                         mt: 2,
                         backgroundColor: "rgba(255, 255, 255, 0.2)",
                         color: "white",
                       }}
                     />
-                  )} */}
+                  )}
                 </div>
 
                 <div
@@ -473,9 +437,9 @@ const TalkCard: React.FC<TalkCardProps> = ({
                           fontWeight: "bold",
                         }}
                         onClick={(e) => handleValidate(e)}
-                        // disabled={
-                        //   availableSlots.length > 0 && selectedSlot === null
-                        // }
+                        disabled={
+                          availableRooms.length > 0 && selectedSlot === null
+                        }
                       >
                         Valider le talk
                       </Button>
