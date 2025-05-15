@@ -122,11 +122,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
       roomId,
       date,
       duration = 1,
-    }: {
-      roomId: number;
-      date: Date;
-      duration?: number;
-    }) => {
+    }: any) => {
       if (!date) {
         throw new Error("La date du talk n'est pas définie");
       }
