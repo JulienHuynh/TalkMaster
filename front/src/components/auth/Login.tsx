@@ -68,7 +68,7 @@ const Login: FC = () => {
                     email: login.email,
                     password: login.password,
                   },
-                })
+                });
               }}
             >
               <FormControl variant="standard">
