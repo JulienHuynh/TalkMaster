@@ -7,7 +7,6 @@ export default function useCreateTalk() {
       userId: "e69e1032-a5fd-43fb-9382-b90350d224ca",
       roomId: 1,
       status: "pending",
-      date: new Date(),
     };
 
     const token = document.cookie
