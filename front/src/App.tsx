@@ -5,6 +5,7 @@ import "./style/global.css";
 
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Login from "./components/auth/Login.tsx";
+import Signup from "./components/auth/Signup.tsx";
 import Management from "./components/organizer/Management.tsx";
 import Overview from "./components/organizer/Overview.tsx";
 import Planning from "./components/organizer/Planning.tsx";
@@ -25,7 +26,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
-            <Route
+            <Route path="/signup" element={<Signup />} />
+          <Route
               path="/talk"
               element={
                 <ProtectedRoute>
