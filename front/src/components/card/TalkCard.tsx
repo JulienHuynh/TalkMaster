@@ -8,7 +8,6 @@ import { fr } from "date-fns/locale";
 import type * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  MdLocationOn,
   MdOutlineAccessTime,
   MdOutlineCalendarToday,
   MdOutlineExpandMore,
@@ -149,7 +148,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
-          `Erreur lors de la récupération des créneaux : ${response.status} - ${errorText}`
+          `Erreur lors de la récupération des créneaux : ${response.status} - ${errorText}`,
         );
       }
 
@@ -161,7 +160,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
         isTaken: slot.isTaken,
       }));
     },
-    []
+    [],
   );
 
   const [roomData, setRoomData] = useState<
@@ -176,7 +175,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
       { id: 4, name: "Salle 4" },
       { id: 5, name: "Salle 5" },
     ],
-    []
+    [],
   );
 
   const slotParams = useMemo(() => {
@@ -198,7 +197,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
           } catch {
             return { id: roomId, name, slots: [] };
           }
-        })
+        }),
       );
       setRoomData(results);
     };
@@ -212,8 +211,8 @@ const TalkCard: React.FC<TalkCardProps> = ({
     if (roomData) {
       setAvailableRooms(
         roomData.filter((room: any) =>
-          room.slots.every((slot: any) => !slot.isTaken)
-        )
+          room.slots.every((slot: any) => !slot.isTaken),
+        ),
       );
     }
   }, [roomData]);
