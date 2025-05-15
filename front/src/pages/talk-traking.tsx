@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   ButtonGroup,
 } from "@mui/material";
 import { FaCircle } from "react-icons/fa";
-
+import { useGetTalks } from "../hooks/useGetTalkRequests";
 
 interface Talk {
   id: string;
@@ -73,6 +73,11 @@ const statusLabels = {
 
 const TalkTracking = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  // const { talkData, isLoading, error } = useGetTalks();
+
+  // useEffect(() => {
+  //   console.log(talkData);
+  // }, [talkData]);
 
   const filteredTalks = selectedStatus
     ? mockTalks.filter((talk) => talk.status === selectedStatus)
