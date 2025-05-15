@@ -19,10 +19,6 @@ const Login: FC = () => {
   const query = useQuery();
   const privateAuth = query.get("private") === "true";
 
-  const coucou = () => {
-    console.log("Coucou");
-  }
-
   const fetchLogin = async ({
     body,
   }: {
