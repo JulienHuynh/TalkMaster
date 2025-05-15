@@ -17,6 +17,7 @@ import TalkTraking from "./pages/talk-traking.tsx";
 const queryClient = new QueryClient();
 
 const App = () => {
+  // const { user } = useAuth();
   return (
     <SnackbarProvider>
       <QueryClientProvider client={queryClient}>
@@ -57,10 +58,42 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/organizer/overview" element={<Overview />} />
-            <Route path="/organizer/planning" element={<Planning />} />
-            <Route path="/organizer/management" element={<Management />} />
-            <Route path="/talk-traking" element={<TalkTraking />} />
+            {/* {user?.role === 'organizer' && ( */}
+            {/* <> */}
+            <Route
+              path="/organizer/overview"
+              element={
+                <ProtectedRoute>
+                  <Overview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/planning"
+              element={
+                <ProtectedRoute>
+                  <Planning />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/management"
+              element={
+                <ProtectedRoute>
+                  <Management />
+                </ProtectedRoute>
+              }
+            />
+            {/* </> */}
+            {/* )} */}
+            <Route
+              path="/talk-traking"
+              element={
+                <ProtectedRoute>
+                  <TalkTraking />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Router>
       </QueryClientProvider>
