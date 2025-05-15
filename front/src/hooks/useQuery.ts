@@ -41,7 +41,7 @@ export function useApiQuery<T>(
           ).toString()}`
         : "";
 
-    fetch(`${import.meta.env.VITE_API_HOST}/${url}${queryParams}`, {
+    return fetch(`${import.meta.env.VITE_API_HOST}/${url}${queryParams}`, {
       method,
       mode: "cors",
       credentials: "include",
@@ -63,12 +63,12 @@ export function useApiQuery<T>(
       })
       .then((json) => {
         setData(json as T);
-        return { data: json as T, loading: false, error: null };
+        return { token: "", data: json as T, loading: false, error: null };
       })
       .catch((err) => {
         const message = err.message || "Une erreur est survenue";
         setError(message);
-        return { data: null, loading: false, error: message };
+        return { token: "", data: null, loading: false, error: message };
       })
       .finally(() => setLoading(false));
   };
