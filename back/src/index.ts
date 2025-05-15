@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/users", usersRoutes(prisma));
 app.use("/talks", authMiddleware, talksRoutes(prisma));
-app.use("/slots", slotsRoutes(prisma));
+app.use("/slots", authMiddleware, slotsRoutes(prisma));
 app.use(
   "/organizer/talks",
   authMiddleware,

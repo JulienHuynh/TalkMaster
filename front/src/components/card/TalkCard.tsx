@@ -25,8 +25,12 @@ import type { Talk } from "../../types/Talk";
 
 interface TalkCardProps {
   talk: Talk;
-  handleTalkState?: (isValidate: boolean, talkID: number) => void;
   toValidate: boolean;
+  handleTalkState?: (
+    talkId: number,
+    roomId: number,
+    slotsIndexes: object[],
+  ) => void;
   // availableSlots?: Slot[];
 }
 
@@ -37,7 +41,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
   // availableSlots = [],
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
+  const [roomSlot, setRoomSlot] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [availableRooms, setAvailableRooms] = useState<any[]>([]);
 
@@ -49,22 +53,26 @@ const TalkCard: React.FC<TalkCardProps> = ({
   // Handle room selection
   const handleSlotSelection = (e: React.MouseEvent, slotId: number) => {
     e.stopPropagation();
-    setSelectedSlot(selectedSlot === slotId ? null : slotId);
+    setRoomSlot(roomSlot === slotId ? null : slotId);
   };
 
   // Handle talk validation
   const handleValidate = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (handleTalkState && selectedSlot) {
-      handleTalkState(true, talk.id);
+    if (handleTalkState && roomSlot) {
+      handleTalkState(
+        talk.id,
+        roomSlot,
+        roomData.find((room) => room.id === roomSlot)?.slots ?? [],
+      );
     }
   };
 
   // Handle talk rejection
   const handleDecline = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (handleTalkState) {
-      handleTalkState(false, talk.id);
+    if (roomSlot) {
+      // handleTalkState(talk.id, roomSlot,roomData.find(room => room.id === roomSlot)?.slots ?? []) ;
     }
   };
 
@@ -368,9 +376,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                         <Tooltip key={room.id} title={`Salle ${room.id}`}>
                           <Badge
                             color="primary"
-                            variant={
-                              selectedSlot === room.id ? "standard" : "dot"
-                            }
+                            variant={roomSlot === room.id ? "standard" : "dot"}
                             overlap="circular"
                             badgeContent=" "
                           >
@@ -382,7 +388,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                                 },
                                 padding: 1,
                                 backgroundColor:
-                                  selectedSlot === room.id
+                                  roomSlot === room.id
                                     ? "rgba(255, 255, 255, 0.3)"
                                     : "rgba(255, 255, 255, 0.1)",
                                 color: "white",
@@ -397,7 +403,6 @@ const TalkCard: React.FC<TalkCardProps> = ({
                               }
                             >
                               {roomIcons[index % roomIcons.length]}
-                              ""
                             </IconButton>
                           </Badge>
                         </Tooltip>
@@ -411,20 +416,6 @@ const TalkCard: React.FC<TalkCardProps> = ({
                       Aucune salle disponible pour ce créneau
                     </Typography>
                   )}
-
-                  {/* {selectedSlot !== null && (
-                    <Chip
-                      icon={<MdLocationOn />}
-                      label={
-                        getSelectedRoomName() || "Aucune salle sélectionnée"
-                      }
-                      sx={{
-                        mt: 2,
-                        backgroundColor: "rgba(255, 255, 255, 0.2)",
-                        color: "white",
-                      }}
-                    />
-                  )} */}
                 </div>
 
                 <div
@@ -452,7 +443,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                         }}
                         onClick={(e) => handleValidate(e)}
                         disabled={
-                          availableRooms.length > 0 && selectedSlot === null
+                          availableRooms.length > 0 && roomSlot === null
                         }
                       >
                         Valider le talk

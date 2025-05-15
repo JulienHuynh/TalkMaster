@@ -64,15 +64,14 @@ export default function slotsRoutes(prisma: PrismaClient): Router {
     async (
       req: Request<{
         roomId: number;
-        date: string;
-        userId: string;
         talkId: number;
+        slotsIndex: object[];
       }>,
       res: any,
     ) => {
-      const { roomId, date, userId, talkId } = req.body;
+      const { roomId, talkId, slotsIndex } = req.body;
 
-      if (!roomId || !date || !userId || !talkId)
+      if (!roomId || !slotsIndex || !talkId)
         return res
           .status(400)
           .json({ error: "roomId, date, talkId and userId are required" });
@@ -90,65 +89,50 @@ export default function slotsRoutes(prisma: PrismaClient): Router {
           .status(400)
           .json({ error: "Talk already has slots assigned" });
 
-      const talkDuration = talk.duration;
+      const baseDate = new Date(talk.date);
+      baseDate.setHours(0, 0, 0, 0);
 
-      const baseDate = new Date(date);
-      // baseDate.toLocaleString('fr-FR', {
-      //     timeZone: 'Europe/Paris',
-      // });
-
-      // Get index of date
-      const minutes = baseDate.getHours() * 60 + baseDate.getMinutes();
-      const index = Math.floor(minutes / 15); // index de 0 à 95
-      const slotIndexes = Array.from(
-        { length: talkDuration },
-        (_, i) => index + i,
-      );
-
-      // Check if slots indexes exists
       const existingSlots = await prisma.slot.findMany({
         where: {
           roomId,
-          index: { in: slotIndexes },
+          index: { in: slotsIndex.map((s: any) => s.index) },
           date: {
             gte: baseDate,
-            lt: new Date(baseDate.getTime() + 24 * 60 * 60 * 1000),
+            lt: new Date(new Date(baseDate).getTime() + 24 * 60 * 60 * 1000),
           },
         },
       });
 
-      const isTaken = existingSlots.some(
-        (slot: any) => slot.index >= index && slot.index < index + talkDuration,
-      );
-
-      if (isTaken)
+      if (existingSlots.length > 0) {
         return res
           .status(400)
           .json({ error: "One or more selected slots are already reserved" });
+      }
 
-      // Reserve the slots
       await Promise.all(
-        slotIndexes.map((i) => {
+        slotsIndex.map((slot: any) => {
           return prisma.slot
             .create({
               data: {
-                date: baseDate,
-                index: i,
+                date: talk.date,
+                index: slot.index,
                 roomId,
-                userId,
+                userId: talk.userId,
                 talkId: talkId,
               },
             })
             .then((slot: any) => {
               return {
-                index: i,
+                index: slot.index,
                 time: slot.date,
               };
             })
             .catch(() => {
               return res
                 .status(400)
-                .json({ error: `Impossible de réserver le slot ${i}` });
+                .json({
+                  error: `Impossible de réserver le slot ${slot.index}`,
+                });
             });
         }),
       )

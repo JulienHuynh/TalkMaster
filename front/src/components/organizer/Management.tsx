@@ -41,13 +41,33 @@ const Management: React.FC = () => {
     fetchTalkRequests();
   }, [fetchTalkRequests]);
 
-  const updateTalkState = useUpdateStateTalk;
+  // Define a payload interface for updating talk state
+  interface TalkStatePayload {
+    talkId: number;
+    roomId: number;
+    slotsIndex: object[];
+  }
 
-  const handleTalkState = (isValidate: boolean, talkID: number) => {
-    updateTalkState(talkID, {
-      status: isValidate ? "accepted" : "refused",
-    }).then(() => {
-      const updatedTalks = talkRequests.filter((talk) => talk.id !== talkID);
+  // Define the signature of the updateTalkState function
+  type UpdateTalkStateFn = (payload: TalkStatePayload) => Promise<Response>;
+
+  // Annotate the hook with its return type
+  const updateTalkState: UpdateTalkStateFn = useUpdateStateTalk;
+
+  const handleTalkState = (
+    talkId: number,
+    roomId: number,
+    slotsIndex: object[],
+  ): void => {
+    updateTalkState({
+      talkId,
+      roomId,
+      slotsIndex,
+    }).then((res) => {
+      if (!res.ok) {
+        return;
+      }
+      const updatedTalks = talkRequests.filter((talk) => talk.id !== talkId);
       setTalkRequests(updatedTalks);
     });
   };
