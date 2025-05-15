@@ -4,7 +4,8 @@ import "./index.css";
 import App from "./App";
 import { AuthProvider } from "./context/authContext";
 
-createRoot(document.getElementById("root")).render(
+// biome-ignore lint/style/noNonNullAssertion: <explanation>
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
       <App />

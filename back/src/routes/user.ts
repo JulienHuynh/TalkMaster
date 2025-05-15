@@ -13,7 +13,7 @@ export default function usersRoutes(prisma: PrismaClient): Router {
   });
 
   router.post(
-    "/",
+    "/signup",
     async (
       req: Request<{
         email: string;

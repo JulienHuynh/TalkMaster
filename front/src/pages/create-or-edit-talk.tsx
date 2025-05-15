@@ -27,14 +27,6 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
   const isCreatePage = location.pathname === "/create-talk";
   const isEditPage = location.pathname === "/edit-talk/:id";
 
-  const _handleTalk = (talk: TalkProps) => {
-    if (talk.id) {
-      // edit talk
-    } else {
-      // create talk
-    }
-  };
-
   // Reset all fields
   const handleCancel = () => {
     setSubject("");
