@@ -1,36 +1,37 @@
-import { useState } from 'react';
-import type { Slot } from '../types/Slot';
+import { useState } from "react";
+import type { Slot } from "../types/Slot";
 
 const useGetAvailableSlots = () => {
   const [error, setError] = useState<Error | null>(null);
-  const getAvailableSlots = async (date: Date, duration: number): Promise<Slot[]> => {
+  const getAvailableSlots = async (
+    date: Date,
+    duration: number,
+  ): Promise<Slot[]> => {
     setError(null);
-      try {   
-      
-      const response = await fetch('/api/slots/available', {
-        method: 'POST',
+    try {
+      const response = await fetch("/api/slots/available", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           date,
-          duration
+          duration,
         }),
       });
-      
+
       if (!response.ok) {
-        throw new Error('Failed to fetch available slots');
+        throw new Error("Failed to fetch available slots");
       }
-      
+
       const data = await response.json();
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
-      console.error('Error fetching available slots:', error);
-      return [];
+      setError(err instanceof Error ? err : new Error("Unknown error"));
+      return error as unknown as Slot[];
     }
   };
-  
+
   return getAvailableSlots;
-};  
+};
 export default useGetAvailableSlots;

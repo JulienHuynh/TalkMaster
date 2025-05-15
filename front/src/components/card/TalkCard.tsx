@@ -1,16 +1,20 @@
-import * as React from "react";
-import { useState, useRef } from "react";
+import { Badge, Button, Chip, Collapse } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import backgroundImage from "../../../public/conference.jpg";
-import type { Talk } from "../../types/Talk";
-import type { Slot } from "../../types/Slot";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Button, Badge, Chip, Collapse } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import type * as React from "react";
+import { useRef, useState } from "react";
+import {
+  MdLocationOn,
+  MdOutlineAccessTime,
+  MdOutlineCalendarToday,
+  MdOutlineExpandMore,
+  MdPerson,
+} from "react-icons/md";
 import {
   TbCircleNumber1Filled,
   TbCircleNumber2Filled,
@@ -18,13 +22,9 @@ import {
   TbCircleNumber4Filled,
   TbCircleNumber5Filled,
 } from "react-icons/tb";
-import {
-  MdOutlineAccessTime,
-  MdOutlineCalendarToday,
-  MdOutlineExpandMore,
-  MdLocationOn,
-  MdPerson,
-} from "react-icons/md";
+import backgroundImage from "../../../public/conference.jpg";
+import type { Slot } from "../../types/Slot";
+import type { Talk } from "../../types/Talk";
 
 interface TalkCardProps {
   talk: Talk;
@@ -105,7 +105,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
   const getSelectedRoomName = () => {
     if (selectedSlot === null) return "";
     const selectedSlotObj = availableSlots.find(
-      (slot) => slot.id === selectedSlot
+      (slot) => slot.id === selectedSlot,
     );
     return selectedSlotObj?.room?.name || "";
   };
@@ -322,6 +322,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                 <div
                   className="flex gap-4 w-full justify-center mt-3"
                   onClick={(e) => e.stopPropagation()}
+                  onKeyUp={(e) => e.stopPropagation()}
                 >
                   {handleTalkState && (
                     <>

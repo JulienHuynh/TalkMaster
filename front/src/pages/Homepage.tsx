@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import type React from "react";
 import AuthLayout from "../components/auth/Layout";
 
 const Homepage: React.FC = () => {

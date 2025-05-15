@@ -1,14 +1,14 @@
-import * as React from "react";
-import dayjs, { Dayjs } from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import Badge from "@mui/material/Badge";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import type { PickersDayProps } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { DayCalendarSkeleton } from "@mui/x-date-pickers/DayCalendarSkeleton";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { PickersDay } from "@mui/x-date-pickers/PickersDay";
+import dayjs, { type Dayjs } from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import * as React from "react";
 import { TbCircleNumber1Filled } from "react-icons/tb";
 
 dayjs.extend(utc);
@@ -23,7 +23,7 @@ function fakeFetch(date: Dayjs, { signal }: { signal: AbortSignal }) {
     const timeout = setTimeout(() => {
       const daysInMonth = date.daysInMonth();
       const daysToHighlight = [1, 2, 3].map(() =>
-        getRandomNumber(1, daysInMonth)
+        getRandomNumber(1, daysInMonth),
       );
 
       resolve({ daysToHighlight });
@@ -49,7 +49,9 @@ function ServerDay(props: PickersDayProps & { highlightedDays?: number[] }) {
     <Badge
       key={props.day.toString()}
       overlap="circular"
-      badgeContent={isSelected ? <TbCircleNumber1Filled  color="red"/> : undefined}
+      badgeContent={
+        isSelected ? <TbCircleNumber1Filled color="red" /> : undefined
+      }
     >
       <PickersDay
         {...other}
@@ -65,7 +67,7 @@ export default function Calenddar() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
 
-  const fetchHighlightedDays = (date: Dayjs) => {
+  const fetchHighlightedDays = React.useCallback((date: Dayjs) => {
     const controller = new AbortController();
     fakeFetch(date, {
       signal: controller.signal,
@@ -82,16 +84,15 @@ export default function Calenddar() {
       });
 
     requestAbortController.current = controller;
-  };
+  }, []);
 
   React.useEffect(() => {
     fetchHighlightedDays(initialValue);
     return () => requestAbortController.current?.abort();
-  }, []);
+  }, [fetchHighlightedDays]);
 
   const handleMonthChange = (date: Dayjs) => {
     if (requestAbortController.current) {
-
       requestAbortController.current.abort();
     }
 
@@ -103,7 +104,12 @@ export default function Calenddar() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendar
-        sx={{ backgroundColor: "white", color: "black",borderRadius: "10px",width: "100%"}}
+        sx={{
+          backgroundColor: "white",
+          color: "black",
+          borderRadius: "10px",
+          width: "100%",
+        }}
         defaultValue={initialValue}
         loading={isLoading}
         onMonthChange={handleMonthChange}

@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useGetTalkRequests from "../../hooks/useGetTalkRequests.ts";
 import useUpdateStateTalk from "../../hooks/useUpdateStateTalk.ts";
 import type { Talk } from "../../types/Talk.ts";
@@ -20,15 +20,15 @@ const Management: React.FC = () => {
     });
   };
 
-  const getTalkRequests = () => {
+  const getTalkRequests = useCallback(() => {
     getTalks()
       .then((data) => {
         setTalkRequests(data);
       })
       .catch((err) => {
-        console.error("Erreur de récupération des talks", err);
+        return err;
       });
-  };
+  }, [getTalks]);
 
   useEffect(() => {
     const fakeTalk: Talk = {
@@ -111,7 +111,7 @@ const Management: React.FC = () => {
       },
     ]);
     getTalkRequests();
-  }, []);
+  }, [getTalkRequests]);
 
   return (
     <div>
@@ -124,7 +124,7 @@ const Management: React.FC = () => {
               talk={talk}
               toValidate={true}
               handleTalkState={handleTalkState}
-            ></TalkCard>
+            />
           ))
         ) : (
           <div>Aucun talk demandé...</div>

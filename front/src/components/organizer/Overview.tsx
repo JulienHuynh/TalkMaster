@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { useEffect, useState } from "react";
 import type { Talk } from "../../types/Talk.ts";
 
@@ -6,7 +6,7 @@ import TalkCard from "../card/TalkCard.tsx";
 
 const Overview: React.FC = () => {
   const [talkRequests, setTalkRequests] = useState<Talk[]>([]);
-  
+
   useEffect(() => {
     const fetchTalks = async () => {
       try {
@@ -17,7 +17,7 @@ const Overview: React.FC = () => {
         const calculateStartTime = (
           dayOffset: number,
           hour: number,
-          minute: number
+          minute: number,
         ): Date => {
           return new Date(
             Date.UTC(
@@ -26,8 +26,8 @@ const Overview: React.FC = () => {
               now.getDate() + dayOffset,
               hour,
               minute,
-              0
-            )
+              0,
+            ),
           );
         };
 
@@ -35,7 +35,7 @@ const Overview: React.FC = () => {
           id: 1,
           title: "Conférence Test",
           description: "Une conférence fictive pour test",
-          duration: 2, 
+          duration: 2,
           subject: "Développement",
           status: "pending",
           createdAt: new Date(),
@@ -114,7 +114,7 @@ const Overview: React.FC = () => {
 
         setTalkRequests(talks);
       } catch (error) {
-        console.error("Erreur lors de la récupération des talks:", error);
+        return error;
       }
     };
 
@@ -127,10 +127,7 @@ const Overview: React.FC = () => {
         <h4 className="font-bold mb-10">Créneaux des talks</h4>
         {talkRequests.length > 0 ? (
           talkRequests.map((talk) => (
-            <TalkCard
-              talk={talk}
-              toValidate={false}
-            ></TalkCard>
+            <TalkCard key={talk.id} talk={talk} toValidate={false} />
           ))
         ) : (
           <div>Aucun talk planifié...</div>
