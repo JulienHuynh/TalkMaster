@@ -47,19 +47,26 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       req: Request<{
         title: string;
         description: string;
+        subject: string;
         status: string;
+        date: Date;
+        duration: number;
         roomId: number;
         userId: string;
       }>,
-      res: any,
+      res: any
     ) => {
       const {
         title,
         description,
+        subject,
         status = "pending",
+        date,
+        duration,
         roomId,
         userId,
       } = req.body;
+      console.log(req.body);
 
       if (!title || !roomId || !userId) {
         return res
@@ -72,16 +79,19 @@ export default function talksRoutes(prisma: PrismaClient): Router {
           data: {
             title,
             description,
+            subject,
             status,
+            date,
+            duration,
             roomId,
             userId,
           },
         })
         .then((talk: object) => res.status(201).json(talk))
         .catch(() =>
-          res.status(400).json({ error: "Impossible de créer le talk" }),
+          res.status(400).json({ error: "Impossible de créer le talk" })
         );
-    },
+    }
   );
 
   //Talk Modification
@@ -96,7 +106,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
         roomId: number;
         userId: string;
       }>,
-      res: any,
+      res: any
     ) => {
       const { id } = req.params;
       const { title, description, roomId, status, userId } = req.body;
@@ -131,9 +141,9 @@ export default function talksRoutes(prisma: PrismaClient): Router {
         })
         .then((updatedTalk: object) => res.status(200).json(updatedTalk))
         .catch(() =>
-          res.status(400).json({ error: "Impossible de modifier le talk" }),
+          res.status(400).json({ error: "Impossible de modifier le talk" })
         );
-    },
+    }
   );
 
   // Delete a Talk
@@ -164,12 +174,12 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       await prisma.talk
         .delete({ where: { id: Number(id) } })
         .then(() =>
-          res.status(200).json({ message: "Talk supprimé avec succès" }),
+          res.status(200).json({ message: "Talk supprimé avec succès" })
         )
         .catch(() =>
-          res.status(400).json({ error: "Impossible de supprimer le talk" }),
+          res.status(400).json({ error: "Impossible de supprimer le talk" })
         );
-    },
+    }
   );
 
   return router;
