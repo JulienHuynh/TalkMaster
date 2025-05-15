@@ -3,7 +3,6 @@ export default function useUpdateStateTalk(payload: {
   roomId: number;
   slotsIndex: object[];
 }) {
-
   const token = document.cookie
     .split("; ")
     .find((row) => row.startsWith("token="))

@@ -128,11 +128,9 @@ export default function slotsRoutes(prisma: PrismaClient): Router {
               };
             })
             .catch(() => {
-              return res
-                .status(400)
-                .json({
-                  error: `Impossible de réserver le slot ${slot.index}`,
-                });
+              return res.status(400).json({
+                error: `Impossible de réserver le slot ${slot.index}`,
+              });
             });
         }),
       )
