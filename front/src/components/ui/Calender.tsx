@@ -86,7 +86,6 @@ export default function Calenddar() {
 
   React.useEffect(() => {
     fetchHighlightedDays(initialValue);
-    // abort request on unmount
     return () => requestAbortController.current?.abort();
   }, []);
 

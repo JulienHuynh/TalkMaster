@@ -50,6 +50,7 @@ const Management: React.FC = () => {
       duration: 30,
       subject: "Développement",
       status: "pending",
+      date: new Date(),
       createdAt: new Date(),
       updatedAt: new Date(),
       roomId: 1,
@@ -79,12 +80,48 @@ const Management: React.FC = () => {
       Slot: [],
     };
     setTalkRequests([
-      fakeTalk,
-      fakeTalk,
-      fakeTalk,
-      fakeTalk,
-      fakeTalk,
-      fakeTalk,
+      {
+        ...fakeTalk,
+        id: 1,
+        title: "Conférence Test",
+        duration: 2,
+        date: new Date(),
+      },
+      {
+        ...fakeTalk,
+        id: 2,
+        title: "Développement Web",
+        duration: 1,
+        date: new Date(),
+      },
+      {
+        ...fakeTalk,
+        id: 3,
+        title: "Intelligence Artificielle",
+        duration: 3,
+        date: new Date(),
+      },
+      {
+        ...fakeTalk,
+        id: 4,
+        title: "DevOps en pratique",
+        duration: 2,
+        date: new Date(),
+      },
+      {
+        ...fakeTalk,
+        id: 5,
+        title: "Blockchain Avancée",
+        duration: 1,
+        date: new Date(),
+      },
+      {
+        ...fakeTalk,
+        id: 6,
+        title: "UX Design",
+        duration: 3,
+        date: new Date(),
+      },
     ]);
     getTalkRequests();
   }, []);
@@ -98,8 +135,8 @@ const Management: React.FC = () => {
             <TalkCard
               talk={talk}
               toValidate={true}
-              DeclineTalk={DeclineTalk}
-              ValidateTalk={ValidateTalk}
+              declineTalk={DeclineTalk}
+              validateTalk={ValidateTalk}
             ></TalkCard>
           ))
         ) : (
