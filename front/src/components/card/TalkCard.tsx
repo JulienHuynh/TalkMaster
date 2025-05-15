@@ -118,11 +118,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
   ];
 
   const getRoomSlots = useCallback(
-    async ({
-      roomId,
-      date,
-      duration = 1,
-    }: any) => {
+    async ({ roomId, date, duration = 1 }: any) => {
       if (!date) {
         throw new Error("La date du talk n'est pas définie");
       }
