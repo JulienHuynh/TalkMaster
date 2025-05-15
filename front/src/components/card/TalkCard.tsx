@@ -117,55 +117,58 @@ const TalkCard: React.FC<TalkCardProps> = ({
     <TbCircleNumber5Filled key="room5" size="30" />,
   ];
 
-  const getRoomSlots = useCallback(async ({
-    roomId,
-    date,
-    duration = 1,
-  }: {
-    roomId: number;
-    date: Date;
-    duration?: number;
-  }) => {
-    if (!date) {
-      throw new Error("La date du talk n'est pas définie");
-    }
+  const getRoomSlots = useCallback(
+    async ({
+      roomId,
+      date,
+      duration = 1,
+    }: {
+      roomId: number;
+      date: Date;
+      duration?: number;
+    }) => {
+      if (!date) {
+        throw new Error("La date du talk n'est pas définie");
+      }
 
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
 
-    if (!token) {
-      throw new Error("Token manquant dans les cookies");
-    }
+      if (!token) {
+        throw new Error("Token manquant dans les cookies");
+      }
 
-    const url = `${import.meta.env.VITE_API_HOST}/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
+      const url = `${import.meta.env.VITE_API_HOST}/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `Erreur lors de la récupération des créneaux : ${response.status} - ${errorText}`,
-      );
-    }
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Erreur lors de la récupération des créneaux : ${response.status} - ${errorText}`,
+        );
+      }
 
-    const data = await response.json();
+      const data = await response.json();
 
-    // console.log(data);
+      // console.log(data);
 
-    return data.map((slot: any) => ({
-      index: slot.index,
-      time: slot.time,
-      isTaken: slot.isTaken,
-    }));
-  }, []);
+      return data.map((slot: any) => ({
+        index: slot.index,
+        time: slot.time,
+        isTaken: slot.isTaken,
+      }));
+    },
+    [],
+  );
 
   const [roomData, setRoomData] = useState<
     { id: number; name: string; slots: any[] }[]
@@ -426,7 +429,9 @@ const TalkCard: React.FC<TalkCardProps> = ({
                                 },
                               }}
                               onClick={(e) => handleSlotSelection(e, room.id)}
-                              disabled={!availableRooms.find((r) => r.id === room.id)}
+                              disabled={
+                                !availableRooms.find((r) => r.id === room.id)
+                              }
                             >
                               {roomIcons[index % roomIcons.length]}
                             </IconButton>
