@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,7 +9,6 @@ import {
   ButtonGroup,
 } from "@mui/material";
 import { FaCircle } from "react-icons/fa";
-import { useGetTalks } from "../hooks/useGetTalkRequests";
 
 interface Talk {
   id: string;
