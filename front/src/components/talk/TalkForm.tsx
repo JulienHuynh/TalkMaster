@@ -68,9 +68,12 @@ export const TalkForm: React.FC<TalkFormProps> = ({
     e.preventDefault();
     const formData = { title, subject, date, description, duration };
     if (!validateDate(date)) {
-      enqueueSnackbar("Veuillez sélectionner une date valide entre 9h00 et 18h00", {
-        variant: "error",
-      });
+      enqueueSnackbar(
+        "Veuillez sélectionner une date valide entre 9h00 et 18h00",
+        {
+          variant: "error",
+        },
+      );
       return;
     }
     onSubmit(formData);
@@ -91,7 +94,9 @@ export const TalkForm: React.FC<TalkFormProps> = ({
       autoComplete="off"
       gap={1}
     >
-      <button type="button" onClick={() => validateDate(date)}>coucou</button>
+      <button type="button" onClick={() => validateDate(date)}>
+        coucou
+      </button>
       <Typography
         variant="h5"
         component="h1"
