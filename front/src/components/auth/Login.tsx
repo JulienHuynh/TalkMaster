@@ -21,28 +21,13 @@ const Login: FC = () => {
   const query = useQuery();
   const privateAuth = query.get("private") === "true";
 
-  const [fetch] = useApiQuery<User>("users/login", "POST")
+  const [fetch] = useApiQuery<User>("users/login", "POST");
 
   const [login, setLogin] = useState({
     email: "",
     password: "",
-  })
+  });
 
-  // const fetch = useApiQuery('user/login', 'POST', {
-  //   body: {
-  //     email: "",
-  //     password: "",
-  //   }
-  // })
-
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAuthMethod: string
-  ) => {
-    if (newAuthMethod !== null) {
-      setAuthMethod(newAuthMethod);
-    }
-  };
   return (
     <AuthLayout>
       {privateAuth && (
@@ -70,26 +55,22 @@ const Login: FC = () => {
           <Typography className="text-center">
             {!privateAuth
               ? "Connectez-vous afin de consulter les conférences à venir. "
-              : `Connectez-vous en tant que ${authMethod === "organizer" ? "organisateur" : "conférencier"
-              } afin d'organiser le programme.`}
+              : `Connectez-vous en tant que ${
+                  authMethod === "organizer" ? "organisateur" : "conférencier"
+                } afin d'organiser le programme.`}
           </Typography>
           <div className="flex flex-col gap-2 w-full">
-            <form onSubmit={async (e) => {
-              e.preventDefault();
-              console.log('coucou')
-              await fetch({
-                body: {
-                  email: login.email,
-                  password: login.password,
-                }
-              }).then((res) => {
-                console.log(res);
-              }).catch((err) => {
-                console.error(err);
-              })
-
-              console.log("end")
-            }}>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await fetch({
+                  body: {
+                    email: login.email,
+                    password: login.password,
+                  },
+                })
+              }}
+            >
               <FormControl variant="standard">
                 <InputLabel sx={{ color: "white" }}>Email</InputLabel>
                 <Input
@@ -109,7 +90,12 @@ const Login: FC = () => {
                   type="password"
                 />
               </FormControl>
-              <Button className="w-full" size="large" variant="contained" type="submit">
+              <Button
+                className="w-full"
+                size="large"
+                variant="contained"
+                type="submit"
+              >
                 Valider
               </Button>
             </form>
