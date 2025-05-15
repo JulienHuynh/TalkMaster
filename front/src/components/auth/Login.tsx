@@ -33,13 +33,16 @@ const Login: FC = () => {
       },
       body: JSON.stringify(body),
     })
-      .then((res) => {
+      .then(async (res) => {
         if (!res.ok) {
-          return res.json().then((error) => {
-            enqueueSnackbar(error.message || "Erreur lors de la connexion", {
-              variant: "error",
-            });
+          const error = await res.json();
+          enqueueSnackbar(error.error || "Erreur lors de la connexion", {
+            variant: "error",
           });
+
+          return Promise.reject(
+            error.error || "Erreur lors de la connexion",
+          );
         }
         return res.json();
       })
@@ -100,9 +103,8 @@ const Login: FC = () => {
           <Typography className="text-center">
             {!privateAuth
               ? "Connectez-vous afin de consulter les conférences à venir. "
-              : `Connectez-vous en tant que ${
-                  authMethod === "organizer" ? "organisateur" : "conférencier"
-                } afin d'organiser le programme.`}
+              : `Connectez-vous en tant que ${authMethod === "organizer" ? "organisateur" : "conférencier"
+              } afin d'organiser le programme.`}
           </Typography>
           <div className="flex flex-col gap-2 w-full">
             <form
