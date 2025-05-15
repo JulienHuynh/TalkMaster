@@ -23,21 +23,20 @@ import {
   TbCircleNumber5Filled,
 } from "react-icons/tb";
 import backgroundImage from "../../../public/conference.jpg";
-import type { Slot } from "../../types/Slot";
 import type { Talk } from "../../types/Talk";
 
 interface TalkCardProps {
   talk: Talk;
   handleTalkState?: (isValidate: boolean, talkID: number) => void;
   toValidate: boolean;
-  availableSlots?: Slot[];
+  // availableSlots?: Slot[];
 }
 
 const TalkCard: React.FC<TalkCardProps> = ({
   talk,
   handleTalkState,
   toValidate = false,
-  availableSlots = [],
+  // availableSlots = [],
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
@@ -101,14 +100,45 @@ const TalkCard: React.FC<TalkCardProps> = ({
     return formatTime(endTime);
   };
 
-  // Get selected room name
-  const getSelectedRoomName = () => {
-    if (selectedSlot === null) return "";
-    const selectedSlotObj = availableSlots.find(
-      (slot) => slot.id === selectedSlot,
-    );
-    return selectedSlotObj?.room?.name || "";
+  // // Get selected room name
+  // const getSelectedRoomName = () => {
+  //   if (selectedSlot === null) return "";
+  //   const selectedSlotObj = availableSlots.find(
+  //     (slot) => slot.id === selectedSlot,
+  //   );
+  //   return selectedSlotObj?.room?.name || "";
+  // };
+
+  const getRoomSlots = async ({ roomId }: any) => {
+    if (!talk.date) {
+      throw new Error("La date du talk n'est pas définie");
+    }
+
+    console.log(talk.date);
+    const slots = await fetch(
+      `${import.meta.env.VITE_API_HOST}/slots&roomId=${roomId}&date=${talk.date}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("token="))
+              ?.split("=")[1]
+          }`,
+        },
+      },
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des créneaux");
+      }
+      return response.json();
+    });
+    return slots;
   };
+
+  console.log(getRoomSlots(1));
 
   // Room icons
   const roomIcons = [
