@@ -3,7 +3,13 @@ import type { CreateTalkProps } from "../../types/Talk";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
-import { Button, MenuItem, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  duration,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { fieldSx } from "../../utils/helper";
@@ -26,6 +32,7 @@ export const TalkForm: React.FC<TalkFormProps> = ({
   const [title, setTitle] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [duration, setDuration] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -107,6 +114,22 @@ export const TalkForm: React.FC<TalkFormProps> = ({
             }}
           />
         </LocalizationProvider>
+      </FormControl>
+
+      <FormControl fullWidth>
+        <TextField
+          id="duration-input"
+          label="Duration"
+          variant="outlined"
+          sx={fieldSx}
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+        >
+          <MenuItem value="15">15 minutes</MenuItem>
+          <MenuItem value="15">15 minutes</MenuItem>
+          <MenuItem value="30">30 minutes</MenuItem>
+          <MenuItem value="45">45 minutes</MenuItem>
+        </TextField>
       </FormControl>
 
       <FormControl fullWidth>
