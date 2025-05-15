@@ -11,6 +11,7 @@ export type User = {
   role: string;
   firstName?: string | null;
   lastName?: string | null;
+  token?: string | null;
   Talk?: Talk[];
   Favorite?: Favorite[];
   Slot?: Slot[];

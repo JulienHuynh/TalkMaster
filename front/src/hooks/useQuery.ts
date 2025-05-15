@@ -8,6 +8,7 @@ interface UseApiQueryOptions {
 }
 
 interface UseApiQueryResult<T> {
+  token: string;
   data: T | null;
   loading: boolean;
   error: string | null;
@@ -40,7 +41,7 @@ export function useApiQuery<T>(
           ).toString()}`
         : "";
 
-    return fetch(`${import.meta.env.VITE_API_HOST}/${url}${queryParams}`, {
+    fetch(`${import.meta.env.VITE_API_HOST}/${url}${queryParams}`, {
       method,
       mode: "cors",
       credentials: "include",
@@ -72,5 +73,8 @@ export function useApiQuery<T>(
       .finally(() => setLoading(false));
   };
 
-  return [fetchApi, { data, loading, error }];
+  return [fetchApi, {
+    data, loading, error,
+    token: undefined
+  }];
 }
