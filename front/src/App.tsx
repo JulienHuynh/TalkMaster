@@ -38,7 +38,7 @@ const App = () => {
               path="/create-talk"
               element={
                 <ProtectedRoute>
-                  <CreateTalk talk={defaultTalk} />
+                  <CreateTalk />
                 </ProtectedRoute>
               }
             />
@@ -54,7 +54,7 @@ const App = () => {
               path="/edit-talk/:id"
               element={
                 <ProtectedRoute>
-                  <CreateTalk talk={defaultTalk} />
+                  <CreateTalk />
                 </ProtectedRoute>
               }
             />
