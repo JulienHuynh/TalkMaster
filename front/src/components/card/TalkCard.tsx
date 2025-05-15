@@ -8,7 +8,6 @@ import { fr } from "date-fns/locale";
 import type * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  MdLocationOn,
   MdOutlineAccessTime,
   MdOutlineCalendarToday,
   MdOutlineExpandMore,
@@ -101,14 +100,14 @@ const TalkCard: React.FC<TalkCardProps> = ({
   };
 
   // // Get selected room name
-  const getSelectedRoomName = () => {
-    const selectedRoom = availableRooms.find(
-      (room) => room.id === selectedSlot,
-    );
-    return selectedRoom
-      ? `Salle ${selectedRoom.id}`
-      : "Aucune salle sélectionnée";
-  };
+  // const getSelectedRoomName = () => {
+  //   const selectedRoom = availableRooms.find(
+  //     (room) => room.id === selectedSlot
+  //   );
+  //   return selectedRoom
+  //     ? `Salle ${selectedRoom.id}`
+  //     : "Aucune salle sélectionnée";
+  // };
 
   // Room icons
   const roomIcons = [
@@ -134,7 +133,9 @@ const TalkCard: React.FC<TalkCardProps> = ({
         throw new Error("Token manquant dans les cookies");
       }
 
-      const url = `${import.meta.env.VITE_API_HOST}/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
+      const url = `${
+        import.meta.env.VITE_API_HOST
+      }/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
 
       const response = await fetch(url, {
         method: "GET",
@@ -375,6 +376,10 @@ const TalkCard: React.FC<TalkCardProps> = ({
                           >
                             <IconButton
                               sx={{
+                                "&.disabled": {
+                                  opacity: 0.5,
+                                  pointerEvents: "none",
+                                },
                                 padding: 1,
                                 backgroundColor:
                                   selectedSlot === room.id
@@ -392,6 +397,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                               }
                             >
                               {roomIcons[index % roomIcons.length]}
+                              ""
                             </IconButton>
                           </Badge>
                         </Tooltip>
@@ -406,7 +412,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                     </Typography>
                   )}
 
-                  {selectedSlot !== null && (
+                  {/* {selectedSlot !== null && (
                     <Chip
                       icon={<MdLocationOn />}
                       label={
@@ -418,7 +424,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                         color: "white",
                       }}
                     />
-                  )}
+                  )} */}
                 </div>
 
                 <div
@@ -432,6 +438,10 @@ const TalkCard: React.FC<TalkCardProps> = ({
                         variant="contained"
                         color="primary"
                         sx={{
+                          "&.disabled": {
+                            opacity: 0.5,
+                            pointerEvents: "none",
+                          },
                           borderRadius: "50px",
                           backgroundColor: "rgba(46, 125, 50, 0.9)",
                           "&:hover": {
