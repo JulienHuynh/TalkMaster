@@ -7,6 +7,8 @@ import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
 import TalkTraking from "./pages/talk-traking.tsx";
+import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 const App = () => {
   return (
@@ -16,17 +18,31 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/talk" element={<Talk />} />
+            <Route path="/talk" element={<ProtectedRoute>
+              <Talk />
+            </ProtectedRoute>} />
             <Route
               path="/create-talk"
-              element={<CreateTalk talk={defaultTalk} />}
+              element={
+                <ProtectedRoute>
+                  <CreateTalk talk={defaultTalk} />
+                </ProtectedRoute>
+              }
             />
-            <Route path="/talk-list" element={<TalkList />} />
+            <Route path="/talk-list" element={
+              <ProtectedRoute>
+                <TalkList />
+              </ProtectedRoute>
+            } />
             <Route
               path="/edit-talk/:id"
-              element={<CreateTalk talk={defaultTalk} />}
+              element={
+                <ProtectedRoute>
+                  <CreateTalk talk={defaultTalk} />
+                </ProtectedRoute>
+              }
             />
-            
+            <Route path="/talk-management" element={<TalkManagement />} />
             <Route path="/talk-traking" element={<TalkTraking />} />
           </Routes>
         </Router>

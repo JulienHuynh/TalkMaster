@@ -2,19 +2,17 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import backgroundImage from '../../../public/conference.jpg';
 import { IoMdCheckmark } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import type { Talk } from "../../types/Talk.ts";
 
 interface TalkCardProps {
     talk: Talk;
-    ValidateTalk?: (talkID: number) => void;
-    DeclineTalk?: (talkID: number) => void;
+    handleTalkState?: (isValidate: boolean, talkID: number) => void;
     toValidate: boolean;
 }
 
-const TalkCard: React.FC<TalkCardProps> = ({ talk, ValidateTalk, DeclineTalk, toValidate = false }) => {
+const TalkCard: React.FC<TalkCardProps> = ({ talk, handleTalkState, toValidate = false }) => {
 
     const convertDuration = (duration: number) => {
         const minutesDuration = duration * 15;
@@ -32,7 +30,7 @@ const TalkCard: React.FC<TalkCardProps> = ({ talk, ValidateTalk, DeclineTalk, to
         <Card sx={{
             minWidth: 275,
             marginBottom: 3,
-            backgroundImage: `url(${backgroundImage})`,
+            backgroundImage: `url("conference.jpg")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             color: 'white',
@@ -52,15 +50,15 @@ const TalkCard: React.FC<TalkCardProps> = ({ talk, ValidateTalk, DeclineTalk, to
                     </div>
                     {toValidate && (
                         <div className={"flex"}>
-                            {ValidateTalk && (
-                                <div className={"bg-white rounded-full p-1 mr-5 cursor-pointer"} onClick={() => ValidateTalk && ValidateTalk(talk.id)}>
-                                    <IoMdCheckmark size={24} className={"text-green-500"} />
-                                </div>
-                            )}
-                            {DeclineTalk && (
-                                <div className={"bg-white rounded-full p-1 cursor-pointer"} onClick={() => DeclineTalk && DeclineTalk(talk.id)}>
-                                    <RxCross2 size={24} className={"text-red-500"} />
-                                </div>
+                            {handleTalkState && (
+                                <>
+                                    <div className={"bg-white rounded-full p-1 mr-5 cursor-pointer"} onClick={() => handleTalkState(true, talk.id)}>
+                                        <IoMdCheckmark size={24} className={"text-green-500"} />
+                                    </div>
+                                    <div className={"bg-white rounded-full p-1 cursor-pointer"} onClick={() => handleTalkState(false, talk.id)}>
+                                        <RxCross2 size={24} className={"text-red-500"} />
+                                    </div>
+                                </>
                             )}
                         </div>
                     )}

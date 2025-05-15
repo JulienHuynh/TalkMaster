@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { IoAdd } from "react-icons/io5";
+import { useAuth } from "../context/authContext";
 
 export const Talk = () => {
+  const { logout } = useAuth()
   return (
     <div className="flex flex-col items-center justify-center h-screen">
+      <button onClick={logout}>Logout</button>
       <h1 className="text-xl font-bold mb-8 text-white">
         Bienvenue sur TalksCenter
       </h1>
