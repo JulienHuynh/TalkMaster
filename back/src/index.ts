@@ -13,7 +13,10 @@ const prisma = new PrismaClient();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      /https:\/\/.*\.vercel\.app/, // autorise n’importe quel sous-domaine Vercel
+      "http://localhost:5173",
+    ],
     credentials: true,
   }),
 );

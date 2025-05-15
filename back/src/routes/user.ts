@@ -13,7 +13,7 @@ export default function usersRoutes(prisma: PrismaClient): Router {
   });
 
   router.post(
-    "/",
+    "/signup",
     async (
       req: Request<{
         email: string;
@@ -97,12 +97,6 @@ export default function usersRoutes(prisma: PrismaClient): Router {
           expiresIn: "1h",
         },
       );
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production',
-        maxAge: 3600000, // 1 hour
-      });
 
       res.json({
         id: user.id,
