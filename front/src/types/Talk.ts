@@ -8,10 +8,9 @@ export type Talk = {
   title: string;
   description: string | null;
   date?: Date;
-  duration?: number;
+  duration: number;
   subject: string;
   status: string;
-  date: Date;
   createdAt?: Date;
   updatedAt?: Date;
   roomId: number;
