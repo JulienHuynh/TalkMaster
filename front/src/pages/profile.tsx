@@ -46,7 +46,6 @@ export const Profile = () => {
               fullWidth
               onClick={() => setRole("organizer")}
               sx={{
-                // marginBottom: 4,
                 py: 2,
                 bgcolor: role === "organizer" ? "grey.700" : "transparent",
                 "&:hover": {

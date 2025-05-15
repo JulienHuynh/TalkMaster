@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoChevronBack, IoPersonCircle } from "react-icons/io5";
 import { HiMiniUserGroup } from "react-icons/hi2";
 import { Typography } from "@mui/material";
@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 const Navbar: React.FC = () => {
   const location = useLocation();
   const isCreatePage = location.pathname === "/create";
+  const navigate = useNavigate();
 
   return (
     <div className="bg-gray-800 py-4 px-6 fixed top-0 left-0 right-0 z-50">
@@ -20,7 +21,10 @@ const Navbar: React.FC = () => {
               <IoChevronBack size={24} />
             </Link>
           ) : null}
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             <HiMiniUserGroup size={24} className="text-white" />
             <Typography
               variant="h2"
