@@ -30,10 +30,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     () =>
       fetch(`${import.meta.env.VITE_API_HOST}/users/me`, {
         headers: {
-          Authorization: `Bearer ${document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("token="))
-            ?.split("=")[1] || ""}`,
+          Authorization: `Bearer ${
+            document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("token="))
+              ?.split("=")[1] || ""
+          }`,
         },
       })
         .then((res) => (res.ok ? res.json() : null))
