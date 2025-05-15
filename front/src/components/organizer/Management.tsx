@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import type * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import useUpdateStateTalk from "../../hooks/useUpdateStateTalk.ts";
@@ -6,6 +7,7 @@ import TalkCard from "../card/TalkCard.tsx";
 
 const Management: React.FC = () => {
   const [talkRequests, setTalkRequests] = useState<Talk[]>([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   const token = document.cookie
     .split("; ")
@@ -26,6 +28,9 @@ const Management: React.FC = () => {
     })
       .then((response) => {
         if (!response.ok) {
+          enqueueSnackbar("Erreur lors du chargement des demandes de talk", {
+            variant: "error",
+          });
           return Promise.reject(
             "Erreur lors du chargement des demandes de talk",
           );
@@ -35,21 +40,44 @@ const Management: React.FC = () => {
       .then((data) => {
         setTalkRequests(data);
       });
-  }, [token]);
+  }, [token, enqueueSnackbar]);
 
   useEffect(() => {
     fetchTalkRequests();
   }, [fetchTalkRequests]);
 
-  const updateTalkState = useUpdateStateTalk;
+  // Define a payload interface for updating talk state
+  interface TalkStatePayload {
+    talkId: number;
+    roomId: number;
+    slotsIndex: object[];
+  }
 
-  const handleTalkState = (isValidate: boolean, talkID: number) => {
-    updateTalkState(talkID, {
-      status: isValidate ? "accepted" : "refused",
-    }).then(() => {
-      const updatedTalks = talkRequests.filter((talk) => talk.id !== talkID);
-      setTalkRequests(updatedTalks);
-    });
+  // Define the signature of the updateTalkState function
+  type UpdateTalkStateFn = (payload: TalkStatePayload) => Promise<Response>;
+
+  // Annotate the hook with its return type
+  const updateTalkState: UpdateTalkStateFn = useUpdateStateTalk;
+
+  const handleTalkState = (
+    talkId: number,
+    roomId: number,
+    slotsIndex: object[],
+  ): void => {
+    updateTalkState({
+      talkId,
+      roomId,
+      slotsIndex,
+    })
+      .then(() => {
+        const updatedTalks = talkRequests.filter((talk) => talk.id !== talkId);
+        setTalkRequests(updatedTalks);
+      })
+      .catch((error) => {
+        enqueueSnackbar(`${error}`, {
+          variant: "error",
+        });
+      });
   };
 
   return (

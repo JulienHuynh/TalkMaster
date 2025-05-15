@@ -5,6 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
+import { useSnackbar } from "notistack";
 import { type FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AuthLayout from "./Layout";
@@ -15,6 +16,7 @@ const useQuery = () => {
 
 const Login: FC = () => {
   const [authMethod, setAuthMethod] = useState("speaker");
+  const { enqueueSnackbar } = useSnackbar();
 
   const query = useQuery();
   const privateAuth = query.get("private") === "true";
@@ -26,17 +28,19 @@ const Login: FC = () => {
   }): Promise<void> => {
     await fetch(`${import.meta.env.VITE_API_HOST}/users/login`, {
       method: "POST",
-      // mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     })
-      .then((res) => {
+      .then(async (res) => {
         if (!res.ok) {
-          return res.text().then((text) => {
-            throw new Error(text || `Erreur ${res.status}`);
+          const error = await res.json();
+          enqueueSnackbar(error.error || "Erreur lors de la connexion", {
+            variant: "error",
           });
+
+          return Promise.reject(error.error || "Erreur lors de la connexion");
         }
         return res.json();
       })
@@ -44,7 +48,13 @@ const Login: FC = () => {
         if (data.token) {
           document.cookie = `token=${data.token}; path=/; max-age=86400;`;
           handleLogin();
+          enqueueSnackbar("Connexion réussie", {
+            variant: "success",
+          });
         } else {
+          enqueueSnackbar("Identifiants incorrects", {
+            variant: "error",
+          });
           throw new Error("Identifiants incorrects");
         }
       });

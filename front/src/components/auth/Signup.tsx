@@ -5,11 +5,13 @@ import InputLabel from "@mui/material/InputLabel";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
+import { useSnackbar } from "notistack";
 import { type FC, useState } from "react";
 import AuthLayout from "./Layout";
 
 const Signup: FC = () => {
-  const [signupMethod, setSignupMethod] = useState("classic");
+  const [signupMethod, setSignupMethod] = useState("public");
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetchSignup = async ({
     body,
@@ -24,7 +26,6 @@ const Signup: FC = () => {
   }): Promise<void> => {
     await fetch(`${import.meta.env.VITE_API_HOST}/users/signup`, {
       method: "POST",
-      // mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
@@ -34,7 +35,9 @@ const Signup: FC = () => {
       .then((res) => {
         if (!res.ok) {
           return res.text().then((text) => {
-            throw new Error(text || `Erreur ${res.status}`);
+            enqueueSnackbar(text || "Erreur lors de l'inscription", {
+              variant: "error",
+            });
           });
         }
         return res.json();
@@ -43,14 +46,20 @@ const Signup: FC = () => {
         if (data.token) {
           document.cookie = `token=${data.token}; path=/; max-age=86400;`;
           window.location.href = "/login";
+          enqueueSnackbar("Inscription réussie", {
+            variant: "success",
+          });
         } else {
+          enqueueSnackbar("Identifiants incorrects", {
+            variant: "error",
+          });
           throw new Error("Identifiants incorrects");
         }
       });
   };
 
   const [signup, setSignup] = useState({
-    role: "classic",
+    role: "public",
     firstName: "",
     lastName: "",
     email: "",
