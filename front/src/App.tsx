@@ -1,5 +1,8 @@
-import "./style/global.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import "./style/global.css";
+
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Login from "./components/auth/Login.tsx";
 import Management from "./components/organizer/Management.tsx";
@@ -11,14 +14,13 @@ import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
 import TalkTraking from "./pages/talk-traking.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
         <Router>
           <Routes>
             <Route path="/" element={<Homepage />} />
@@ -56,12 +58,12 @@ const App = () => {
               }
             />
             <Route path="/organizer/overview" element={<Overview />} />
-          <Route path="/organizer/planning" element={<Planning />} />
-          <Route path="/organizer/management" element={<Management />} />
-              <Route path="/talk-traking" element={<TalkTraking />} />
+            <Route path="/organizer/planning" element={<Planning />} />
+            <Route path="/organizer/management" element={<Management />} />
+            <Route path="/talk-traking" element={<TalkTraking />} />
           </Routes>
         </Router>
-        </QueryClientProvider>
+      </QueryClientProvider>
     </>
   );
 };
