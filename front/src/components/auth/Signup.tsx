@@ -11,10 +11,16 @@ import AuthLayout from "./Layout";
 const Signup: FC = () => {
   const [signupMethod, setSignupMethod] = useState("classic");
 
-  const fetchLogin = async ({
+  const fetchSignup = async ({
     body,
   }: {
-    body: { email: string; password: string };
+    body: {
+      email: string;
+      password: string;
+      role: string;
+      firstName: string;
+      lastName: string;
+    };
   }): Promise<void> => {
     await fetch(`${import.meta.env.VITE_API_HOST}/users/signup`, {
       method: "POST",
@@ -24,6 +30,7 @@ const Signup: FC = () => {
       },
       body: JSON.stringify(body),
     })
+
       .then((res) => {
         if (!res.ok) {
           return res.text().then((text) => {
@@ -43,6 +50,9 @@ const Signup: FC = () => {
   };
 
   const [signup, setSignup] = useState({
+    role: "classic",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -83,14 +93,37 @@ const Signup: FC = () => {
               onSubmit={async (e) => {
                 e.preventDefault();
 
-                await fetchLogin({
+                await fetchSignup({
                   body: {
+                    role: signupMethod,
+                    firstName: signup.firstName,
+                    lastName: signup.lastName,
                     email: signup.email,
                     password: signup.password,
                   },
                 });
               }}
             >
+              <div className="flex flex-row gap-2">
+                <FormControl variant="standard" sx={{ width: "100%" }}>
+                  <InputLabel sx={{ color: "white" }}>Prénom</InputLabel>
+                  <Input
+                    sx={{ color: "white" }}
+                    onChange={({ target: { value } }) => {
+                      setSignup((prev) => ({ ...prev, firstName: value }));
+                    }}
+                  />
+                </FormControl>
+                <FormControl variant="standard" sx={{ width: "100%" }}>
+                  <InputLabel sx={{ color: "white" }}>Nom</InputLabel>
+                  <Input
+                    sx={{ color: "white" }}
+                    onChange={({ target: { value } }) => {
+                      setSignup((prev) => ({ ...prev, lastName: value }));
+                    }}
+                  />
+                </FormControl>
+              </div>
               <FormControl variant="standard" sx={{ width: "100%" }}>
                 <InputLabel sx={{ color: "white" }}>Email</InputLabel>
                 <Input
