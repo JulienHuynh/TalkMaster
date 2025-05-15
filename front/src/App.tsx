@@ -12,7 +12,7 @@ import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Profile } from "./pages/profile.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
-
+//test
 const App = () => {
   const queryClient = new QueryClient();
   return (
