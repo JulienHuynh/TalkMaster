@@ -1,6 +1,5 @@
 import type * as React from "react";
 import { useEffect, useState } from "react";
-import { useCallback } from "react";
 import useGetTalkRequests from "../../hooks/useGetTalkRequests.ts";
 import useUpdateStateTalk from "../../hooks/useUpdateStateTalk.ts";
 import type { Talk } from "../../types/Talk.ts";

@@ -28,21 +28,12 @@ const Login: FC = () => {
     password: "",
   });
 
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAuthMethod: string
-  ) => {
-    if (newAuthMethod !== null) {
-      setAuthMethod(newAuthMethod);
-    }
-  };
-
   const handleLogin = () => {
     if (authMethod === "organizer") {
       window.location.href = "/organizer/management";
     } else {
       window.location.href = "/talk";
-    }   
+    }
   };
   return (
     <AuthLayout>
@@ -53,7 +44,9 @@ const Login: FC = () => {
             value={authMethod}
             exclusive
             onChange={(_, newAuthMethod) => {
-              setAuthMethod(newAuthMethod);
+              if (newAuthMethod !== null) {
+                setAuthMethod(newAuthMethod);
+              }
             }}
             aria-label="Platform"
           >

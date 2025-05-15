@@ -337,7 +337,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                           width: "40%",
                           fontWeight: "bold",
                         }}
-                        onClick={() => handleTalkState(true, talk.id)}
+                        onClick={(e) => handleValidate(e)}
                         disabled={
                           availableSlots.length > 0 && selectedSlot === null
                         }
@@ -357,7 +357,7 @@ const TalkCard: React.FC<TalkCardProps> = ({
                           width: "40%",
                           fontWeight: "bold",
                         }}
-                        onClick={() => handleTalkState(false, talk.id)}
+                        onClick={(e) => handleDecline(e)}
                       >
                         Refuser
                       </Button>
