@@ -1,9 +1,11 @@
 import "./style/global.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
-import Homepage from "./components/auth/Homepage.tsx";
 import Login from "./components/auth/Login.tsx";
-import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
+import Management from "./components/organizer/Management.tsx";
+import Overview from "./components/organizer/Overview.tsx";
+import Planning from "./components/organizer/Planning.tsx";
+import Homepage from "./pages/Homepage.tsx";
 import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
@@ -14,50 +16,50 @@ const App = () => {
   const queryClient = new QueryClient();
   return (
     <>
-      <div className="w-3/5 mx-auto">
         <QueryClientProvider client={queryClient}>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Homepage />} />
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/talk"
-                element={
-                  <ProtectedRoute>
-                    <Talk />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/create-talk"
-                element={
-                  <ProtectedRoute>
-                    <CreateTalk />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/talk-list"
-                element={
-                  <ProtectedRoute>
-                    <TalkList />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/edit-talk/:id"
-                element={
-                  <ProtectedRoute>
-                    <CreateTalk />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/talk-management" element={<TalkManagement />} />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/talk"
+              element={
+                <ProtectedRoute>
+                  <Talk />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-talk"
+              element={
+                <ProtectedRoute>
+                  <CreateTalk />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/talk-list"
+              element={
+                <ProtectedRoute>
+                  <TalkList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-talk/:id"
+              element={
+                <ProtectedRoute>
+                  <CreateTalk />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/organizer/overview" element={<Overview />} />
+          <Route path="/organizer/planning" element={<Planning />} />
+          <Route path="/organizer/management" element={<Management />} />
               <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </Router>
+          </Routes>
+        </Router>
         </QueryClientProvider>
-      </div>
     </>
   );
 };

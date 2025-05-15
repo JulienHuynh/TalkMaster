@@ -7,6 +7,7 @@ export type Talk = {
   id: number;
   title: string;
   description: string | null;
+  date?: Date;
   duration?: number;
   subject: string;
   status: string;

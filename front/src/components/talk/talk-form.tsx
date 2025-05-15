@@ -3,12 +3,7 @@ import type { CreateTalkProps } from "../../types/Talk";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
-import {
-  Button,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, MenuItem, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { fieldSx } from "../../utils/helper";
@@ -27,7 +22,7 @@ export const TalkForm: React.FC<TalkFormProps> = ({
   onCancel,
   isEdit = false,
 }) => {
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date>();
   const [title, setTitle] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -104,7 +99,7 @@ export const TalkForm: React.FC<TalkFormProps> = ({
           <DatePicker
             label="Date"
             value={dayjs(date)}
-            onChange={(newVal) => setDate(newVal?.toDate() || null)}
+            onChange={(newVal) => setDate(newVal?.toDate())}
             slotProps={{
               textField: {
                 fullWidth: true,

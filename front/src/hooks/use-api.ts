@@ -8,12 +8,17 @@ export const useApi = <TResult>(
     "queryKey" | "queryFn"
   >
 ): { error?: Error; isLoading: boolean; data?: TResult } => {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+
   const fetchData = async () => {
     const res = await fetch(options.url, {
       ...options,
       headers: {
         ...options.headers,
-        // Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     });
