@@ -1,13 +1,18 @@
 import { Link } from "react-router-dom";
-import { IoAddCircleOutline } from "react-icons/io5";
+import { useAuth } from "../context/authContext";
 import Navbar from "../components/talk/navbar";
+import { IoAddCircleOutline } from "react-icons/io5";
 
 export const Talk = () => {
+  const { logout } = useAuth();
   return (
     <div className="w-full mx-auto">
       <Navbar />
 
       <div className="flex flex-col items-center justify-center h-screen">
+        <button type="button" onClick={logout}>
+          Logout
+        </button>
         <h1 className="text-xl font-bold mb-8 text-white">
           Bienvenue sur Talk Master
         </h1>

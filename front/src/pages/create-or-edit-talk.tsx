@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
+import { TalkForm } from "../components/talk/talk-form";
 import { IoChevronBack } from "react-icons/io5";
 import type { CreateTalkProps } from "../types/Talk";
-import Navbar from "../components/talk/navbar";
-import Footer from "../components/talk/footer";
-import useCreateTalk from "../hooks/useCreateTalk";
-import { TalkForm } from "../components/talk/talk-form";
-import { useGetTalk } from "../hooks/useGetTalkRequests";
 import { defaultTalk } from "../constante/talk";
+import Footer from "../components/talk/footer";
+import Navbar from "../components/talk/navbar";
+import useCreateTalk from "../hooks/useCreateTalk";
+import { useGetTalk } from "../hooks/useGetTalkRequests";
 
 export const CreateTalk = () => {
   const { createTalk } = useCreateTalk();
@@ -27,7 +27,7 @@ export const CreateTalk = () => {
   };
 
   const handleCancel = () => {
-    // Reset form or navigate back
+    window.history.back();
   };
 
   return (

@@ -1,34 +1,35 @@
-import * as React from 'react';
-import {useEffect, useState} from "react";
-import type {Talk} from "../../../types/Talk.ts";
+import type * as React from "react";
+import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import useGetTalkRequests from "../../../hooks/useGetTalkRequests.ts";
+import useUpdateStateTalk from "../../../hooks/useUpdateStateTalk.ts";
+import type { Talk } from "../../../types/Talk.ts";
 import TalkCard from "../../card/TalkCard.tsx";
-import useUpdateStateTalk from '../../../hooks/useUpdateStateTalk.ts';
 
 const TalkManagement: React.FC = () => {
-    const [talkRequests, setTalkRequests] = useState<Talk[]>([]);
-    const getTalks = useGetTalkRequests();
+  const [talkRequests, setTalkRequests] = useState<Talk[]>([]);
+  const getTalks = useGetTalkRequests();
 
-    const handleTalkState = (isValidate: boolean, talkID: number) => {
-        useUpdateStateTalk(talkID, {status: isValidate ? "accepted" : "refused"}).then(() => {
-            const updatedTalks = talkRequests.filter(talk => talk.id !== talkID);
-            setTalkRequests(updatedTalks);
-        }).catch((err) => {
-            console.error('Erreur lors de la validation du talks', err);
-        });
-    }
+  const updateTalkState = useUpdateStateTalk;
 
-    const getTalkRequests = () => {
-        getTalks()
-            .then((data) => {
-                setTalkRequests(data);
-            })
-            .catch((err) => {
-                console.error('Erreur de récupération des talks', err);
-            });
-    }
+  const handleTalkState = (isValidate: boolean, talkID: number) => {
+    updateTalkState(talkID, {
+      status: isValidate ? "accepted" : "refused",
+    }).then(() => {
+      const updatedTalks = talkRequests.filter((talk) => talk.id !== talkID);
+      setTalkRequests(updatedTalks);
+    });
+  };
 
-    useEffect(() => {
+  const getTalkRequests = useCallback(() => {
+    getTalks()
+      .then((data) => {
+        setTalkRequests(data);
+      })
+      .catch(() => {});
+  }, [getTalks]);
+
+  useEffect(() => {
         const fakeTalk: Talk = {
             id: 1,
             title: 'Conférence Test',
@@ -66,19 +67,30 @@ const TalkManagement: React.FC = () => {
             Slot: [],
         };
         setTalkRequests([fakeTalk]);
-        getTalkRequests();
-    }, []);
+    getTalkRequests();
+  }, [getTalkRequests]);
 
-    return (
-        <div>
-            <div className={"flex-col items-center"}>
-                <h1 className="text-3xl font-bold underline text-center mb-5">Demandes de talks</h1>
-                { talkRequests.length > 0 ? talkRequests.map((talk) =>
-                    <TalkCard talk={talk} toValidate={true} handleTalkState={handleTalkState}></TalkCard>
-                ) : <div>Aucun talk demandé...</div>}
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <div className={"flex-col items-center"}>
+        <h1 className="text-3xl font-bold underline text-center mb-5">
+          Demandes de talks
+        </h1>
+        {talkRequests.length > 0 ? (
+          talkRequests.map((talk) => (
+            <TalkCard
+              key={talk.id}
+              talk={talk}
+              toValidate={true}
+              handleTalkState={handleTalkState}
+            />
+          ))
+        ) : (
+          <div>Aucun talk demandé...</div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default TalkManagement;

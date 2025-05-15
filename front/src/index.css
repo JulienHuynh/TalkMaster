@@ -94,10 +94,10 @@ button:focus-visible {
       }
     }
   }
- .login{
-   .MuiButtonBase-root.MuiButton-root {
-    background-color: #cc0900;
-    color: #fff;  
+  .login {
+    .MuiButtonBase-root.MuiButton-root {
+      background-color: #cc0900;
+      color: #fff;
+    }
   }
- }
 }

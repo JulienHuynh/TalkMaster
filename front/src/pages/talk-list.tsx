@@ -1,12 +1,52 @@
 import {
+  Box,
   Card,
   CardContent,
-  Typography,
-  Stack,
-  Box,
   IconButton,
+  Stack,
+  Typography,
 } from "@mui/material";
+import type { MouseEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import type { TalkProps } from "../type/talk.type";
+
+const mockTalks: TalkProps[] = [
+  {
+    id: "1",
+    title: "Talk 1",
+    subject: "Sujet 1",
+    description: "Description 1",
+    date: "2024-03-20",
+  },
+  {
+    id: "2",
+    title: "Talk 2",
+    subject: "Sujet 2",
+    description: "Description 2",
+    date: "2024-03-21",
+  },
+  {
+    id: "3",
+    title: "Talk 3",
+    subject: "Sujet 3",
+    description: "Description 3",
+    date: "2024-03-22",
+  },
+  {
+    id: "4",
+    title: "Talk 4",
+    subject: "Sujet 4",
+    description: "Description 4",
+    date: "2024-03-23",
+  },
+  {
+    id: "5",
+    title: "Talk 5",
+    subject: "Sujet 5",
+    description: "Description 5",
+    date: "2024-03-24",
+  },
+];
 import type { Talk } from "../types/Talk";
 import { IoChevronBack, IoPencil, IoTrash } from "react-icons/io5";
 import Navbar from "../components/talk/navbar";
@@ -32,13 +72,13 @@ export const TalkList = () => {
     getTalkRequests();
   }, []);
 
-  const handleEdit = (e: React.MouseEvent, id: number) => {
+  const handleEdit = (e: MouseEvent, id: number) => {
     console.log("Talks id", id);
     e.stopPropagation();
     navigate(`/edit-talk/${id}`);
   };
 
-  const handleDelete = (e: React.MouseEvent, id: number) => {
+  const handleDelete = (e: MouseEvent, id: number) => {
     e.stopPropagation();
     alert(`Delete talk: ${id}`);
   };
