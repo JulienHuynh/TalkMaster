@@ -7,8 +7,6 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { type FC, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useApiQuery } from "../../hooks/useQuery";
-import type { User } from "../../types/User";
 import AuthLayout from "./Layout";
 
 const useQuery = () => {
@@ -21,7 +19,36 @@ const Login: FC = () => {
   const query = useQuery();
   const privateAuth = query.get("private") === "true";
 
-  const [fetch] = useApiQuery<User>("users/login", "POST");
+  const fetchLogin = async ({
+    body,
+  }: {
+    body: { email: string; password: string };
+  }): Promise<void> => {
+    await fetch(`${import.meta.env.VITE_API_HOST}/users/login`, {
+      method: "POST",
+      // mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.text().then((text) => {
+            throw new Error(text || `Erreur ${res.status}`);
+          });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.token) {
+          document.cookie = `token=${data.token}; path=/; max-age=86400;`;
+          // window.location.href = "/talk";
+        } else {
+          throw new Error("Identifiants incorrects");
+        }
+      });
+  };
 
   const [login, setLogin] = useState({
     email: "",
@@ -72,7 +99,8 @@ const Login: FC = () => {
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
-                await fetch({
+
+                await fetchLogin({
                   body: {
                     email: login.email,
                     password: login.password,

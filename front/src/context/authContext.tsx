@@ -29,7 +29,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const fetchUser = useCallback(
     () =>
       fetch(`${import.meta.env.VITE_API_HOST}/users/me`, {
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${
+            document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("token="))
+              ?.split("=")[1] || ""
+          }`,
+        },
       })
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => setUser(data))
