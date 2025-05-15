@@ -6,25 +6,23 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { type FC, useState } from "react";
-import { useLocation } from "react-router-dom";
 import AuthLayout from "./Layout";
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
+const Signup: FC = () => {
+  const [signupMethod, setSignupMethod] = useState("classic");
 
-const Login: FC = () => {
-  const [authMethod, setAuthMethod] = useState("speaker");
-
-  const query = useQuery();
-  const privateAuth = query.get("private") === "true";
-
-  const fetchLogin = async ({
+  const fetchSignup = async ({
     body,
   }: {
-    body: { email: string; password: string };
+    body: {
+      email: string;
+      password: string;
+      role: string;
+      firstName: string;
+      lastName: string;
+    };
   }): Promise<void> => {
-    await fetch(`${import.meta.env.VITE_API_HOST}/users/login`, {
+    await fetch(`${import.meta.env.VITE_API_HOST}/users/signup`, {
       method: "POST",
       // mode: "cors",
       headers: {
@@ -32,6 +30,7 @@ const Login: FC = () => {
       },
       body: JSON.stringify(body),
     })
+
       .then((res) => {
         if (!res.ok) {
           return res.text().then((text) => {
@@ -43,77 +42,94 @@ const Login: FC = () => {
       .then((data) => {
         if (data.token) {
           document.cookie = `token=${data.token}; path=/; max-age=86400;`;
-          handleLogin();
+          window.location.href = "/login";
         } else {
           throw new Error("Identifiants incorrects");
         }
       });
   };
 
-  const [login, setLogin] = useState({
+  const [signup, setSignup] = useState({
+    role: "classic",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
 
-  const handleLogin = () => {
-    if (authMethod === "organizer") {
-      window.location.href = "/organizer/management";
-    } else {
-      window.location.href = "/talk";
-    }
-  };
   return (
     <AuthLayout>
-      {privateAuth && (
-        <div className="flex justify-center mt-10">
-          <ToggleButtonGroup
-            color="error"
-            value={authMethod}
-            exclusive
-            onChange={(_, newAuthMethod) => {
-              if (newAuthMethod !== null) {
-                setAuthMethod(newAuthMethod);
-              }
-            }}
-            aria-label="Platform"
-          >
-            <ToggleButton sx={{ width: "200px" }} value="speaker">
-              Conférencier
-            </ToggleButton>
-            <ToggleButton sx={{ width: "200px" }} value="organizer">
-              Organisateur
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      )}
+      <div className="flex justify-center mt-10">
+        <ToggleButtonGroup
+          color="error"
+          value={signupMethod}
+          exclusive
+          onChange={(_, newAuthMethod) => {
+            if (newAuthMethod !== null) {
+              setSignupMethod(newAuthMethod);
+            }
+          }}
+          aria-label="Platform"
+        >
+          <ToggleButton sx={{ width: "130px" }} value="classic">
+            Classic
+          </ToggleButton>
+          <ToggleButton sx={{ width: "130px" }} value="speaker">
+            Conférencier
+          </ToggleButton>
+          <ToggleButton sx={{ width: "130px" }} value="organizer">
+            Organisateur
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </div>
+
       <div className="login flex justify-center mt-10">
         <div className="flex flex-col items-center w-3/4 max-w-md gap-6">
           <Typography className="text-center">
-            {!privateAuth
-              ? "Connectez-vous afin de consulter les conférences à venir. "
-              : `Connectez-vous en tant que ${
-                  authMethod === "organizer" ? "organisateur" : "conférencier"
-                } afin d'organiser le programme.`}
+            Créer-vous un compte afin de consulter nos conférences.
           </Typography>
           <div className="flex flex-col gap-2 w-full">
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
 
-                await fetchLogin({
+                await fetchSignup({
                   body: {
-                    email: login.email,
-                    password: login.password,
+                    role: signupMethod,
+                    firstName: signup.firstName,
+                    lastName: signup.lastName,
+                    email: signup.email,
+                    password: signup.password,
                   },
                 });
               }}
             >
+              <div className="flex flex-row gap-2">
+                <FormControl variant="standard" sx={{ width: "100%" }}>
+                  <InputLabel sx={{ color: "white" }}>Prénom</InputLabel>
+                  <Input
+                    sx={{ color: "white" }}
+                    onChange={({ target: { value } }) => {
+                      setSignup((prev) => ({ ...prev, firstName: value }));
+                    }}
+                  />
+                </FormControl>
+                <FormControl variant="standard" sx={{ width: "100%" }}>
+                  <InputLabel sx={{ color: "white" }}>Nom</InputLabel>
+                  <Input
+                    sx={{ color: "white" }}
+                    onChange={({ target: { value } }) => {
+                      setSignup((prev) => ({ ...prev, lastName: value }));
+                    }}
+                  />
+                </FormControl>
+              </div>
               <FormControl variant="standard" sx={{ width: "100%" }}>
                 <InputLabel sx={{ color: "white" }}>Email</InputLabel>
                 <Input
                   sx={{ color: "white" }}
                   onChange={({ target: { value } }) => {
-                    setLogin((prev) => ({ ...prev, email: value }));
+                    setSignup((prev) => ({ ...prev, email: value }));
                   }}
                 />
               </FormControl>
@@ -122,7 +138,7 @@ const Login: FC = () => {
                 <Input
                   sx={{ color: "white" }}
                   onChange={({ target: { value } }) => {
-                    setLogin((prev) => ({ ...prev, password: value }));
+                    setSignup((prev) => ({ ...prev, password: value }));
                   }}
                   type="password"
                 />
@@ -147,13 +163,10 @@ const Login: FC = () => {
           >
             Valider
           </Button> */}
-          <Typography className="text-center">
-            Pas de compte ?<a href="/signup"> Inscrivez-vous !</a>
-          </Typography>
         </div>
       </div>
     </AuthLayout>
   );
 };
 
-export default Login;
+export default Signup;
