@@ -1,4 +1,3 @@
-
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 
 export const useApi = <TResult>(
@@ -16,6 +15,7 @@ export const useApi = <TResult>(
         ...options.headers,
         // Authorization: `Bearer ${accessToken}`,
       },
+      credentials: "include",
     });
 
     if (res.status !== 200 && res.status !== 201) {
