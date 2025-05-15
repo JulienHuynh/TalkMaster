@@ -5,6 +5,7 @@ import { PrismaClient } from "../generated/prisma";
 import { authMiddleware } from "./middleware/auth";
 import { organizerMiddleware } from "./middleware/organizer";
 import organizerTalksRoute from "./routes/organizerTalks";
+import slotsRoutes from "./routes/slot";
 import talksRoutes from "./routes/talk";
 import usersRoutes from "./routes/user";
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/users", usersRoutes(prisma));
 app.use("/talks", authMiddleware, talksRoutes(prisma));
+app.use("/slots", slotsRoutes(prisma));
 app.use(
   "/organizer/talks",
   authMiddleware,
