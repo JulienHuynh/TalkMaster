@@ -1,12 +1,17 @@
-import { Button, MenuItem, TextField, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
+import {
+  Box,
+  Button,
+  FormControl,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import dayjs from "dayjs";
-import { ChevronLeft } from "lucide-react";
-import type * as React from "react";
 import { useState } from "react";
+import type * as React from "react";
+import { IoChevronBack } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import type { TalkProps } from "../type/talk.type";
 import { fieldSx } from "../utils/helper";
@@ -45,7 +50,7 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
       <div>
         {isCreatePage || isEditPage ? (
           <Link to="/talk" className="text-white p-2 rounded-full mr-2 ">
-            <ChevronLeft size={24} />
+            <IoChevronBack size={24} />
           </Link>
         ) : null}
       </div>
