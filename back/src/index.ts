@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       /https:\/\/.*\.vercel\.app/, // autorise n’importe quel sous-domaine Vercel
-      "http://localhost:3000",
+      "http://localhost:5173",
     ],
     credentials: true,
   }),

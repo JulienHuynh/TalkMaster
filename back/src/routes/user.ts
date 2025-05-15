@@ -98,12 +98,6 @@ export default function usersRoutes(prisma: PrismaClient): Router {
         },
       );
 
-      res.cookie("token", token, {
-        httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production',
-        maxAge: 3600000, // 1 hour
-      });
-
       res.json({
         id: user.id,
         email: user.email,
