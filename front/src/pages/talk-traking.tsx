@@ -9,52 +9,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FaCircle } from "react-icons/fa";
-
-interface Talk {
-  id: string;
-  title: string;
-  subject: string;
-  date: string;
-  status: "pending" | "accepted" | "rejected" | "planned";
-}
-
-const mockTalks: Talk[] = [
-  {
-    id: "1",
-    title: "Talk 1",
-    subject: "Sujet 1",
-    date: "2024-03-20",
-    status: "pending",
-  },
-  {
-    id: "2",
-    title: "Talk 2",
-    subject: "Sujet 2",
-    date: "2024-03-21",
-    status: "accepted",
-  },
-  {
-    id: "3",
-    title: "Talk 3",
-    subject: "Sujet 3",
-    date: "2024-03-22",
-    status: "rejected",
-  },
-  {
-    id: "4",
-    title: "Talk 4",
-    subject: "Sujet 4",
-    date: "2024-03-23",
-    status: "accepted",
-  },
-  {
-    id: "5",
-    title: "Talk 5",
-    subject: "Sujet 5",
-    date: "2024-03-24",
-    status: "planned",
-  },
-];
+import { useGetTalks } from "../hooks/useGetTalkRequests";
 
 const statusColors = {
   pending: "#FFC107",
@@ -72,15 +27,11 @@ const statusLabels = {
 
 const TalkTracking = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  // const { talkData, isLoading, error } = useGetTalks();
-
-  // useEffect(() => {
-  //   console.log(talkData);
-  // }, [talkData]);
+  const { talkData } = useGetTalks();
 
   const filteredTalks = selectedStatus
-    ? mockTalks.filter((talk) => talk.status === selectedStatus)
-    : mockTalks;
+    ? talkData?.filter((talk) => talk.status === selectedStatus)
+    : talkData;
 
   return (
     <div className="w-full max-w-xl mt-6 mx-auto">
@@ -136,7 +87,7 @@ const TalkTracking = () => {
       </ButtonGroup>
 
       <Stack spacing={2}>
-        {filteredTalks.map((talk) => (
+        {filteredTalks?.map((talk) => (
           <Card
             key={talk.id}
             sx={{
@@ -158,14 +109,17 @@ const TalkTracking = () => {
               <Box className="flex items-center gap-2 mb-2">
                 <FaCircle
                   size={12}
-                  fill={statusColors[talk.status]}
-                  color={statusColors[talk.status]}
+                  fill={statusColors[talk.status as keyof typeof statusColors]}
+                  color={statusColors[talk.status as keyof typeof statusColors]}
                 />
                 <Typography
                   variant="body2"
-                  sx={{ color: statusColors[talk.status] }}
+                  sx={{
+                    color:
+                      statusColors[talk.status as keyof typeof statusColors],
+                  }}
                 >
-                  {statusLabels[talk.status]}
+                  {statusLabels[talk.status as keyof typeof statusLabels]}
                 </Typography>
               </Box>
               <Typography variant="h6" component="h2" gutterBottom>

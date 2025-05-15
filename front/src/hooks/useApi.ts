@@ -8,13 +8,18 @@ export const useApi = <TResult>(
     "queryKey" | "queryFn"
   >,
 ): { error?: Error; isLoading: boolean; data?: TResult } => {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+
   const fetchData = async () => {
     const res = await fetch(options.url, {
       ...options,
       headers: {
         ...options.headers,
+        Authorization: `Bearer ${token}`,
       },
-      credentials: "include",
     });
 
     if (res.status !== 200 && res.status !== 201) {
