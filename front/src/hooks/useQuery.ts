@@ -79,7 +79,7 @@ export function useApiQuery<T>(
       data,
       loading,
       error,
-      token: ""
+      token: "",
     },
   ];
 }
