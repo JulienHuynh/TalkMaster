@@ -22,9 +22,6 @@ export default function slotsRoutes(prisma: PrismaClient): Router {
       const indexSlot = Math.floor(
         (baseDate.getHours() * 60 + baseDate.getMinutes()) / 15,
       );
-      baseDate.toLocaleString("fr-FR", {
-        timeZone: "Europe/Paris",
-      });
       baseDate.setHours(0, 0, 0, 0);
 
       const takenSlots = await prisma.slot.findMany({

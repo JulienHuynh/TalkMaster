@@ -11,8 +11,8 @@ export type Talk = {
   duration: number;
   subject: string;
   status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   roomId: number;
   userId: string;
   room?: Room;
@@ -20,3 +20,5 @@ export type Talk = {
   Favorite?: Favorite[];
   Slot?: Slot[];
 };
+
+export type CreateTalkProps = Omit<Talk, "id" | "createdAt" | "updatedAt">;

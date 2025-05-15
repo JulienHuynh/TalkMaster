@@ -8,7 +8,6 @@ import Signup from "./components/auth/Signup.tsx";
 import Management from "./components/organizer/Management.tsx";
 import Overview from "./components/organizer/Overview.tsx";
 import Planning from "./components/organizer/Planning.tsx";
-import { defaultTalk } from "./constante/talk.ts";
 import Homepage from "./pages/Homepage.tsx";
 import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
@@ -38,7 +37,7 @@ const App = () => {
               path="/create-talk"
               element={
                 <ProtectedRoute>
-                  <CreateTalk talk={defaultTalk} />
+                  <CreateTalk />
                 </ProtectedRoute>
               }
             />
@@ -54,7 +53,7 @@ const App = () => {
               path="/edit-talk/:id"
               element={
                 <ProtectedRoute>
-                  <CreateTalk talk={defaultTalk} />
+                  <CreateTalk />
                 </ProtectedRoute>
               }
             />

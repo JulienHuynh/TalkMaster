@@ -15,14 +15,14 @@ const statusColors = {
   pending: "#FFC107",
   accepted: "#4CAF50",
   rejected: "#F44336",
-  planned: "#2196F3",
+  plannified: "#2196F3",
 };
 
 const statusLabels = {
   pending: "En attente",
   accepted: "Accepté",
   rejected: "Refusé",
-  planned: "Planifié",
+  plannified: "Planifié",
 };
 
 const TalkTracking = () => {
@@ -79,8 +79,8 @@ const TalkTracking = () => {
           Refusés
         </Button>
         <Button
-          onClick={() => setSelectedStatus("planned")}
-          variant={selectedStatus === "planned" ? "contained" : "outlined"}
+          onClick={() => setSelectedStatus("plannified")}
+          variant={selectedStatus === "plannified" ? "contained" : "outlined"}
         >
           Planifiés
         </Button>

@@ -28,7 +28,18 @@ export const useGetTalks = () => {
 
   const { data, isLoading, error } = useApi<Talk[]>(options, ["talks"]);
 
-  //   console.log(data);
+  return { talkData: data, isLoading, error };
+};
+
+export const useGetTalk = (id: number) => {
+  const options = {
+    method: "GET",
+    url: `${import.meta.env.VITE_API_HOST}/talks/${id}`,
+  };
+
+  const { data, isLoading, error } = useApi<Talk>(options, ["talk", id], {
+    enabled: !!id,
+  });
 
   return { talkData: data, isLoading, error };
 };

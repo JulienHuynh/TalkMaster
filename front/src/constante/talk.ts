@@ -1,9 +1,13 @@
-import type { TalkProps } from "../type/talk.type";
+import type { Talk } from "../types/Talk";
 
-export const defaultTalk: TalkProps = {
-  id: "",
+export const defaultTalk: Talk = {
+  id: 0,
   title: "",
   subject: "",
+  status: "",
+  duration: 1,
   description: "",
-  date: "",
+  date: new Date(),
+  roomId: 0,
+  userId: "",
 };
