@@ -11,7 +11,7 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { token } = req.cookies;
+  const token = req.headers.authorization ? req.headers.authorization.split(" ")[1] : null;
 
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });
