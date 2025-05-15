@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import {
   Button,
-  duration,
   MenuItem,
   TextField,
   Typography,
@@ -32,11 +31,11 @@ export const TalkForm: React.FC<TalkFormProps> = ({
   const [title, setTitle] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [duration, setDuration] = useState<string>("");
+  const [duration, setDuration] = useState<number>(0);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = { title, subject, date, description };
+    const formData = { title, subject, date, description, duration };
     onSubmit(formData);
   };
 
@@ -45,6 +44,7 @@ export const TalkForm: React.FC<TalkFormProps> = ({
     setSubject(talk.subject);
     setDate(talk.date);
     setDescription(talk.description || "");
+    setDuration(talk.duration || 0);
   }, [talk]);
 
   return (
@@ -120,12 +120,12 @@ export const TalkForm: React.FC<TalkFormProps> = ({
         <TextField
           id="duration-input"
           label="Duration"
+          select
           variant="outlined"
           sx={fieldSx}
           value={duration}
-          onChange={(e) => setDuration(e.target.value)}
+          onChange={(e) => setDuration(Number(e.target.value))}
         >
-          <MenuItem value="15">15 minutes</MenuItem>
           <MenuItem value="15">15 minutes</MenuItem>
           <MenuItem value="30">30 minutes</MenuItem>
           <MenuItem value="45">45 minutes</MenuItem>
