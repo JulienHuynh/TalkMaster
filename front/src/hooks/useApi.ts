@@ -6,7 +6,7 @@ export const useApi = <TResult>(
   queryOption?: Omit<
     UseQueryOptions<TResult, Error, TResult, unknown[]>,
     "queryKey" | "queryFn"
-  >
+  >,
 ): { error?: Error; isLoading: boolean; data?: TResult } => {
   const fetchData = async () => {
     const res = await fetch(options.url, {
