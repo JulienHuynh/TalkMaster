@@ -1,5 +1,5 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
+import type * as React from "react";
 import AuthLayout from "./Layout";
 
 const Homepage: React.FC = () => {

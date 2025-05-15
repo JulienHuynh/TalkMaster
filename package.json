@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "check": "biome check --write",
+    "check:ci": "biome check"
+  },
+  "lint-staged": {
+    "(front|back)/**/*.(ts|tsx|js|jsx|json)": ["npm run check"]
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4"
+  },
+  "dependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2"
+  }
+}
