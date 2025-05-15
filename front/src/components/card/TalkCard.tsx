@@ -105,7 +105,9 @@ const TalkCard: React.FC<TalkCardProps> = ({
     const selectedRoom = availableRooms.find(
       (room) => room.id === selectedSlot,
     );
-    return selectedRoom ? `Salle ${selectedRoom.id}` : "Aucune salle sélectionnée";
+    return selectedRoom
+      ? `Salle ${selectedRoom.id}`
+      : "Aucune salle sélectionnée";
   };
 
   // Room icons
@@ -407,7 +409,9 @@ const TalkCard: React.FC<TalkCardProps> = ({
                   {selectedSlot !== null && (
                     <Chip
                       icon={<MdLocationOn />}
-                      label={getSelectedRoomName() || "Aucune salle sélectionnée"}
+                      label={
+                        getSelectedRoomName() || "Aucune salle sélectionnée"
+                      }
                       sx={{
                         mt: 2,
                         backgroundColor: "rgba(255, 255, 255, 0.2)",
