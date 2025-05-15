@@ -1,13 +1,15 @@
-import { Button, MenuItem, TextField, Typography } from "@mui/material";
+import { Button, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import dayjs, { type Dayjs } from "dayjs";
+import { useState } from "react";
 import type * as React from "react";
 import type { CreateTalkProps } from "../../types/Talk";
 import { fieldSx } from "../../utils/helper";
+
+import { useMemo } from "react";
 
 interface TalkFormProps {
   talk: CreateTalkProps;
@@ -21,12 +23,28 @@ export const TalkForm: React.FC<TalkFormProps> = ({
   onSubmit,
   onCancel,
   isEdit = false,
-}) => {
-  const [date, setDate] = useState<Date>();
-  const [title, setTitle] = useState<string>("");
-  const [subject, setSubject] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [duration, setDuration] = useState<number>(0);
+}: TalkFormProps) => {
+  const defaultDate = talk.date ? new Date(talk.date) : new Date();
+  defaultDate.setHours(9, 0, 0, 0);
+
+  // if we have a default talk, we can use it to set the initial values
+  const defaultTalk = useMemo(() => {
+    return {
+      title: talk.title || "",
+      subject: talk.subject || "tech",
+      // date: new Date(talk.date),
+      description: talk.description || "",
+      duration: talk.duration || 1,
+    };
+  }, [talk]);
+
+  const [date, setDate] = useState<Date>(defaultDate);
+  const [title, setTitle] = useState<string>(talk.title);
+  const [subject, setSubject] = useState<string>(talk.subject);
+  const [description, setDescription] = useState<string>(
+    talk.description || "",
+  );
+  const [duration, setDuration] = useState<number>(talk.duration);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,16 +52,8 @@ export const TalkForm: React.FC<TalkFormProps> = ({
     onSubmit(formData);
   };
 
-  useEffect(() => {
-    setTitle(talk.title);
-    setSubject(talk.subject);
-    setDate(talk.date);
-    setDescription(talk.description || "");
-    setDuration(talk.duration || 0);
-  }, [talk]);
-
   return (
-    <Box
+    <Stack
       component="form"
       onSubmit={handleSubmit}
       sx={{
@@ -54,8 +64,8 @@ export const TalkForm: React.FC<TalkFormProps> = ({
         borderRadius: 2,
         bgcolor: "#333333",
       }}
-      noValidate
       autoComplete="off"
+      gap={1}
     >
       <Typography
         variant="h5"
@@ -65,15 +75,15 @@ export const TalkForm: React.FC<TalkFormProps> = ({
       >
         {isEdit ? "Modifier un talk" : "Créer un talk"}
       </Typography>
-
       <FormControl fullWidth>
         <TextField
           id="name-input"
           label="Name"
           variant="outlined"
           sx={fieldSx}
-          value={title}
+          value={defaultTalk.title || title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
       </FormControl>
 
@@ -84,8 +94,9 @@ export const TalkForm: React.FC<TalkFormProps> = ({
           select
           variant="outlined"
           sx={fieldSx}
-          value={subject}
+          value={defaultTalk.subject || subject}
           onChange={(e) => setSubject(e.target.value)}
+          required
         >
           <MenuItem value="tech">Technology</MenuItem>
           <MenuItem value="science">Science</MenuItem>
@@ -96,15 +107,54 @@ export const TalkForm: React.FC<TalkFormProps> = ({
 
       <FormControl fullWidth>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
+          <DateTimePicker
             label="Date"
             value={dayjs(date)}
-            onChange={(newVal) => setDate(newVal?.toDate())}
+            onChange={(newVal) => newVal && setDate(newVal.toDate())}
+            minutesStep={15}
+            format="DD/MM/YYYY HH:mm"
+            ampm={false}
+            shouldDisableTime={(timeValue, clockType) => {
+              if (clockType === "hours") {
+                const hour =
+                  typeof timeValue === "number"
+                    ? timeValue
+                    : (timeValue as Dayjs).hour();
+                return hour < 9 || hour > 17;
+              }
+              return false;
+            }}
             slotProps={{
               textField: {
                 fullWidth: true,
                 variant: "outlined",
-                sx: fieldSx,
+                required: true,
+                InputLabelProps: {
+                  style: { color: "white" }, // couleur du label
+                },
+                InputProps: {
+                  style: { color: "white" }, // couleur du texte saisi
+                },
+                sx: {
+                  "& .MuiInputBase-input": {
+                    color: "white", // texte saisi
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white", // label
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: "white", // icône calendrier
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "white", // bordure normale
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "white", // bordure au survol
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "white", // bordure au focus
+                  },
+                },
               },
             }}
           />
@@ -118,12 +168,13 @@ export const TalkForm: React.FC<TalkFormProps> = ({
           select
           variant="outlined"
           sx={fieldSx}
-          value={duration}
+          value={defaultTalk.duration || duration}
           onChange={(e) => setDuration(Number(e.target.value))}
+          required
         >
-          <MenuItem value="15">15 minutes</MenuItem>
-          <MenuItem value="30">30 minutes</MenuItem>
-          <MenuItem value="45">45 minutes</MenuItem>
+          <MenuItem value={1}>15 minutes</MenuItem>
+          <MenuItem value={2}>30 minutes</MenuItem>
+          <MenuItem value={3}>45 minutes</MenuItem>
         </TextField>
       </FormControl>
 
@@ -135,8 +186,9 @@ export const TalkForm: React.FC<TalkFormProps> = ({
           rows={4}
           variant="outlined"
           sx={fieldSx}
-          value={description}
+          value={defaultTalk.description || description}
           onChange={(e) => setDescription(e.target.value)}
+          required
         />
       </FormControl>
 
@@ -169,6 +221,6 @@ export const TalkForm: React.FC<TalkFormProps> = ({
           {isEdit ? "Modifier" : "Créer"}
         </Button>
       </Box>
-    </Box>
+    </Stack>
   );
 };

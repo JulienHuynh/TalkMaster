@@ -72,6 +72,12 @@ const Management: React.FC = () => {
       .then(() => {
         const updatedTalks = talkRequests.filter((talk) => talk.id !== talkId);
         setTalkRequests(updatedTalks);
+        enqueueSnackbar("Talk validé avec succès", {
+          variant: "success",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       })
       .catch((error) => {
         enqueueSnackbar(`${error}`, {

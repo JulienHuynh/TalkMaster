@@ -5,7 +5,7 @@ export const defaultTalk: Talk = {
   title: "",
   subject: "",
   status: "",
-  duration: 0,
+  duration: 1,
   description: "",
   date: new Date(),
   roomId: 0,

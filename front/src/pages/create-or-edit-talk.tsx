@@ -1,5 +1,6 @@
+import { useSnackbar } from "notistack";
 import { IoChevronBack } from "react-icons/io5";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TalkForm } from "../components/talk/TalkForm";
 import { defaultTalk } from "../constante/talk";
 import useCreateTalk from "../hooks/useCreateTalk";
@@ -9,6 +10,8 @@ export const CreateTalk = () => {
   const { createTalk } = useCreateTalk();
   const location = useLocation();
   const isCreatePage = location.pathname === "/create-talk";
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const talkId = Number.parseInt(location.pathname.split("/").pop() || "");
 
@@ -19,11 +22,11 @@ export const CreateTalk = () => {
       // update talk
     } else {
       await createTalk(formData);
+      enqueueSnackbar("Talk created successfully!", {
+        variant: "success",
+      });
+      navigate("/talk-list");
     }
-  };
-
-  const handleCancel = () => {
-    window.history.back();
   };
 
   return (
@@ -39,7 +42,7 @@ export const CreateTalk = () => {
             <TalkForm
               talk={talkData || defaultTalk}
               onSubmit={handleSubmit}
-              onCancel={handleCancel}
+              onCancel={() => window.history.back()}
               isEdit={!!talkId}
             />
           </div>

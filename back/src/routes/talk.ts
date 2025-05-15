@@ -1,5 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import { type Request, Router } from "express";
+import type { AuthenticatedRequest } from "../middleware/auth";
 
 export default function talksRoutes(prisma: PrismaClient): Router {
   const router = Router();
@@ -47,10 +48,12 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       req: Request<{
         title: string;
         description: string;
-        status: string;
+        status?: string;
+        date: Date;
+        duration: number;
         roomId: number;
-        userId: string;
-      }>,
+      }> &
+        AuthenticatedRequest,
       res: any,
     ) => {
       const {
@@ -58,10 +61,12 @@ export default function talksRoutes(prisma: PrismaClient): Router {
         description,
         status = "pending",
         roomId,
-        userId,
+        duration,
+        date,
       } = req.body;
+      const userId = req.userId;
 
-      if (!title || !roomId || !userId) {
+      if (!title || !roomId || !userId || !duration || !date) {
         return res
           .status(400)
           .json({ error: "title, roomId et userId sont obligatoires" });
@@ -74,6 +79,8 @@ export default function talksRoutes(prisma: PrismaClient): Router {
             description,
             status,
             roomId,
+            duration,
+            date: new Date(date),
             userId,
           },
         })
