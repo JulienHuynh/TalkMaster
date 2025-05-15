@@ -1,14 +1,14 @@
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express from 'express';
 import { PrismaClient } from '../generated/prisma';
-import usersRoutes from './routes/user';
-import talksRoutes from './routes/talk';
-import organizerTalksRoute from './routes/organizerTalks';
-import cookieParser from 'cookie-parser';
 import { authMiddleware } from './middleware/auth';
-const app = express();
-import cors from 'cors';
 import { organizerMiddleware } from './middleware/organizer';
+import organizerTalksRoute from './routes/organizerTalks';
+import talksRoutes from './routes/talk';
+import usersRoutes from './routes/user';
 
+const app = express();
 const prisma = new PrismaClient();
 
 app.use(cors({
