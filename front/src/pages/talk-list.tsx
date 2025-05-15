@@ -1,14 +1,15 @@
 import {
+  Box,
   Card,
   CardContent,
-  Typography,
-  Stack,
-  Box,
   IconButton,
+  Stack,
+  Typography,
 } from "@mui/material";
+import { ChevronLeft, Pencil, Trash2 } from "lucide-react";
+import type { MouseEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { TalkProps } from "../type/talk.type";
-import { ChevronLeft, Pencil, Trash2 } from "lucide-react";
 
 const mockTalks: TalkProps[] = [
   {
@@ -51,12 +52,12 @@ const mockTalks: TalkProps[] = [
 export const TalkList = () => {
   const navigate = useNavigate();
 
-  const handleEdit = (e: React.MouseEvent, id: string) => {
+  const handleEdit = (e: MouseEvent, id: string) => {
     e.stopPropagation();
     navigate(`/edit-talk/${id}`);
   };
 
-  const handleDelete = (e: React.MouseEvent, id: string) => {
+  const handleDelete = (e: MouseEvent, id: string) => {
     e.stopPropagation();
     alert(`Delete talk: ${id}`);
   };

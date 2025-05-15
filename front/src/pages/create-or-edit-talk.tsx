@@ -1,16 +1,15 @@
-import * as React from "react";
+import { Button, MenuItem, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
-import { Button, MenuItem, TextField, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
-import { fieldSx } from "../utils/helper";
-import { Link, useLocation } from "react-router-dom";
+import dayjs from "dayjs";
 import { ChevronLeft } from "lucide-react";
+import type * as React from "react";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import type { TalkProps } from "../type/talk.type";
-import { defaultTalk } from "../constante/talk";
+import { fieldSx } from "../utils/helper";
 
 interface CreateTalkProps {
   talk: TalkProps | null;
@@ -18,15 +17,17 @@ interface CreateTalkProps {
 
 export const CreateTalk = ({ talk }: CreateTalkProps) => {
   const [date, setDate] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [subject, setSubject] = useState("");
-  const [description, setDescription] = useState("");
+  const [subject, setSubject] = useState<string>(talk?.subject || "");
+  const [description, setDescription] = useState<string>(
+    talk?.description || "",
+  );
+  const [title, setTitle] = useState<string>(talk?.title || "");
 
   const location = useLocation();
   const isCreatePage = location.pathname === "/create-talk";
   const isEditPage = location.pathname === "/edit-talk/:id";
 
-  const handleTalk = (talk: TalkProps) => {
+  const _handleTalk = (talk: TalkProps) => {
     if (talk.id) {
       // edit talk
     } else {
@@ -36,17 +37,15 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
 
   // Reset all fields
   const handleCancel = () => {
-    setName("");
     setSubject("");
-    setDate(null);
     setDescription("");
+    setDate(null);
+    window.history.back();
   };
 
   // Form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = { name, subject, date: date, description };
-    console.log("Form submitted with:", formData);
   };
 
   return (
@@ -85,11 +84,11 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
           <FormControl fullWidth>
             <TextField
               id="name-input"
-              label="Name"
+              label="Titre"
               variant="outlined"
               sx={fieldSx}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </FormControl>
 

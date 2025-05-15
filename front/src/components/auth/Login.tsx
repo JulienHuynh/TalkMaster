@@ -1,49 +1,33 @@
-import * as React from "react";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import AuthLayout from "./Layout";
 import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import Button from "@mui/material/Button";
+import { type FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useApiQuery } from "../../hooks/useQuery";
 import type { User } from "../../types/User";
-import { useState } from "react";
+import AuthLayout from "./Layout";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-const Login: React.FC = () => {
-  const [authMethod, setAuthMethod] = React.useState("speaker");
+const Login: FC = () => {
+  const [authMethod, setAuthMethod] = useState("speaker");
 
   const query = useQuery();
   const privateAuth = query.get("private") === "true";
 
-  const [fetch] = useApiQuery<User>("users/login", "POST")
+  const [fetch] = useApiQuery<User>("users/login", "POST");
 
   const [login, setLogin] = useState({
     email: "",
     password: "",
-  })
+  });
 
-  // const fetch = useApiQuery('user/login', 'POST', {
-  //   body: {
-  //     email: "",
-  //     password: "",
-  //   }
-  // })
-
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAuthMethod: string
-  ) => {
-    if (newAuthMethod !== null) {
-      setAuthMethod(newAuthMethod);
-    }
-  };
   return (
     <AuthLayout>
       {privateAuth && (
@@ -52,7 +36,9 @@ const Login: React.FC = () => {
             color="error"
             value={authMethod}
             exclusive
-            onChange={handleChange}
+            onChange={(_, newAuthMethod) => {
+              setAuthMethod(newAuthMethod);
+            }}
             aria-label="Platform"
           >
             <ToggleButton sx={{ width: "200px" }} value="speaker">
@@ -69,26 +55,22 @@ const Login: React.FC = () => {
           <Typography className="text-center">
             {!privateAuth
               ? "Connectez-vous afin de consulter les conférences à venir. "
-              : `Connectez-vous en tant que ${authMethod === "organizer" ? "organisateur" : "conférencier"
-              } afin d'organiser le programme.`}
+              : `Connectez-vous en tant que ${
+                  authMethod === "organizer" ? "organisateur" : "conférencier"
+                } afin d'organiser le programme.`}
           </Typography>
           <div className="flex flex-col gap-2 w-full">
-            <form onSubmit={async (e) => {
-              e.preventDefault();
-              console.log('coucou')
-              await fetch({
-                body: {
-                  email: login.email,
-                  password: login.password,
-                }
-              }).then((res) => {
-                console.log(res);
-              }).catch((err) => {
-                console.error(err);
-              })
-
-              console.log("end")
-            }}>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await fetch({
+                  body: {
+                    email: login.email,
+                    password: login.password,
+                  },
+                });
+              }}
+            >
               <FormControl variant="standard">
                 <InputLabel sx={{ color: "white" }}>Email</InputLabel>
                 <Input
@@ -108,7 +90,12 @@ const Login: React.FC = () => {
                   type="password"
                 />
               </FormControl>
-              <Button className="w-full" size="large" variant="contained" type="submit">
+              <Button
+                className="w-full"
+                size="large"
+                variant="contained"
+                type="submit"
+              >
                 Valider
               </Button>
             </form>

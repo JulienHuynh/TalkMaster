@@ -1,13 +1,13 @@
 import "./style/global.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Homepage from "./components/auth/Homepage.tsx";
 import Login from "./components/auth/Login.tsx";
+import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
 import { defaultTalk } from "./constante/talk.ts";
 import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
 import { TalkList } from "./pages/talk-list.tsx";
-import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
-import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 const App = () => {
   return (
@@ -17,9 +17,14 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/talk" element={<ProtectedRoute>
-              <Talk />
-            </ProtectedRoute>} />
+            <Route
+              path="/talk"
+              element={
+                <ProtectedRoute>
+                  <Talk />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/create-talk"
               element={
@@ -28,11 +33,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/talk-list" element={
-              <ProtectedRoute>
-                <TalkList />
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/talk-list"
+              element={
+                <ProtectedRoute>
+                  <TalkList />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/edit-talk/:id"
               element={
