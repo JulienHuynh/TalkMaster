@@ -4,12 +4,12 @@ import FormControl from "@mui/material/FormControl";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import dayjs, { type Dayjs } from "dayjs";
+import { useSnackbar } from "notistack";
 import { useState } from "react";
 import type * as React from "react";
+import { useMemo } from "react";
 import type { CreateTalkProps } from "../../types/Talk";
 import { fieldSx } from "../../utils/helper";
-
-import { useMemo } from "react";
 
 interface TalkFormProps {
   talk: CreateTalkProps;
@@ -24,6 +24,7 @@ export const TalkForm: React.FC<TalkFormProps> = ({
   onCancel,
   isEdit = false,
 }: TalkFormProps) => {
+  const { enqueueSnackbar } = useSnackbar();
   const defaultDate = talk.date ? new Date(talk.date) : new Date();
   defaultDate.setHours(9, 0, 0, 0);
 
@@ -38,6 +39,7 @@ export const TalkForm: React.FC<TalkFormProps> = ({
     };
   }, [talk]);
 
+  const [error, setError] = useState<string | null>(null);
   const [date, setDate] = useState<Date>(defaultDate);
   const [title, setTitle] = useState<string>(talk.title);
   const [subject, setSubject] = useState<string>(talk.subject);
@@ -46,9 +48,31 @@ export const TalkForm: React.FC<TalkFormProps> = ({
   );
   const [duration, setDuration] = useState<number>(talk.duration);
 
+  const validateDate = (selectedDate: Date | null) => {
+    if (!selectedDate) {
+      setError("Ce champ est requis");
+      return false;
+    }
+
+    const hour = selectedDate.getHours();
+    if (hour < 9 || hour >= 18) {
+      setError("L'heure doit être entre 9h00 et 18h00");
+      return false;
+    }
+
+    setError(null);
+    return true;
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = { title, subject, date, description, duration };
+    if (!validateDate(date)) {
+      enqueueSnackbar("Veuillez sélectionner une date valide entre 9h00 et 18h00", {
+        variant: "error",
+      });
+      return;
+    }
     onSubmit(formData);
   };
 
@@ -67,6 +91,7 @@ export const TalkForm: React.FC<TalkFormProps> = ({
       autoComplete="off"
       gap={1}
     >
+      <button type="button" onClick={() => validateDate(date)}>coucou</button>
       <Typography
         variant="h5"
         component="h1"
@@ -129,11 +154,13 @@ export const TalkForm: React.FC<TalkFormProps> = ({
                 fullWidth: true,
                 variant: "outlined",
                 required: true,
+                error: Boolean(error),
                 InputLabelProps: {
                   style: { color: "white" }, // couleur du label
                 },
                 InputProps: {
                   style: { color: "white" }, // couleur du texte saisi
+                  contentEditable: false, // désactive l'édition directe du champ
                 },
                 sx: {
                   "& .MuiInputBase-input": {
