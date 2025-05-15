@@ -1,35 +1,24 @@
-import * as React from "react";
+import type * as React from "react";
 import { useEffect, useState } from "react";
-import type { Talk } from "../../types/Talk.ts";
+import { useCallback } from "react";
 import useGetTalkRequests from "../../hooks/useGetTalkRequests.ts";
-import useValidateTalk from "../../hooks/useValidateTalk.ts";
-import useDeclineTalk from "../../hooks/useDeclineTalk.ts";
+import useUpdateStateTalk from "../../hooks/useUpdateStateTalk.ts";
+import type { Talk } from "../../types/Talk.ts";
 import TalkCard from "../card/TalkCard.tsx";
 
 const Management: React.FC = () => {
   const [talkRequests, setTalkRequests] = useState<Talk[]>([]);
   const getTalks = useGetTalkRequests();
 
-  const ValidateTalk = (talkID: number) => {
-    useValidateTalk(talkID)
-      .then(() => {
-        const updatedTalks = talkRequests.filter((talk) => talk.id !== talkID);
-        setTalkRequests(updatedTalks);
-      })
-      .catch((err) => {
-        console.error("Erreur lors de la validation du talks", err);
-      });
-  };
+  const updateTalkState = useUpdateStateTalk;
 
-  const DeclineTalk = (talkID: number) => {
-    useDeclineTalk(talkID)
-      .then(() => {
-        const updatedTalks = talkRequests.filter((talk) => talk.id !== talkID);
-        setTalkRequests(updatedTalks);
-      })
-      .catch((err) => {
-        console.error("Erreur lors du refus du talks", err);
-      });
+  const handleTalkState = (isValidate: boolean, talkID: number) => {
+    updateTalkState(talkID, {
+      status: isValidate ? "accepted" : "refused",
+    }).then(() => {
+      const updatedTalks = talkRequests.filter((talk) => talk.id !== talkID);
+      setTalkRequests(updatedTalks);
+    });
   };
 
   const getTalkRequests = () => {
@@ -50,7 +39,6 @@ const Management: React.FC = () => {
       duration: 30,
       subject: "Développement",
       status: "pending",
-      date: new Date(),
       createdAt: new Date(),
       updatedAt: new Date(),
       roomId: 1,
@@ -133,10 +121,10 @@ const Management: React.FC = () => {
         {talkRequests.length > 0 ? (
           talkRequests.map((talk) => (
             <TalkCard
+              key={talk.id}
               talk={talk}
               toValidate={true}
-              declineTalk={DeclineTalk}
-              validateTalk={ValidateTalk}
+              handleTalkState={handleTalkState}
             ></TalkCard>
           ))
         ) : (

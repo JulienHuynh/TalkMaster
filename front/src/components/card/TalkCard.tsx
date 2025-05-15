@@ -35,8 +35,7 @@ interface TalkCardProps {
 
 const TalkCard: React.FC<TalkCardProps> = ({
   talk,
-  validateTalk,
-  declineTalk,
+  handleTalkState,
   toValidate = false,
   availableSlots = [],
 }) => {
@@ -58,16 +57,16 @@ const TalkCard: React.FC<TalkCardProps> = ({
   // Handle talk validation
   const handleValidate = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (validateTalk) {
-      validateTalk(talk.id, selectedSlot || undefined);
+    if (handleTalkState && selectedSlot) {
+      handleTalkState(true, talk.id);
     }
   };
 
   // Handle talk rejection
   const handleDecline = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (declineTalk) {
-      declineTalk(talk.id);
+    if (handleTalkState) {
+      handleTalkState(false, talk.id);
     }
   };
 
@@ -324,45 +323,45 @@ const TalkCard: React.FC<TalkCardProps> = ({
                   className="flex gap-4 w-full justify-center mt-3"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {validateTalk && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        borderRadius: "50px",
-                        backgroundColor: "rgba(46, 125, 50, 0.9)",
-                        "&:hover": {
-                          backgroundColor: "rgba(46, 125, 50, 1)",
-                        },
-                        width: "40%",
-                        fontWeight: "bold",
-                      }}
-                      onClick={handleValidate}
-                      disabled={
-                        availableSlots.length > 0 && selectedSlot === null
-                      }
-                    >
-                      Valider le talk
-                    </Button>
-                  )}
+                  {handleTalkState && (
+                    <>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          borderRadius: "50px",
+                          backgroundColor: "rgba(46, 125, 50, 0.9)",
+                          "&:hover": {
+                            backgroundColor: "rgba(46, 125, 50, 1)",
+                          },
+                          width: "40%",
+                          fontWeight: "bold",
+                        }}
+                        onClick={() => handleTalkState(true, talk.id)}
+                        disabled={
+                          availableSlots.length > 0 && selectedSlot === null
+                        }
+                      >
+                        Valider le talk
+                      </Button>
 
-                  {declineTalk && (
-                    <Button
-                      variant="contained"
-                      color="error"
-                      sx={{
-                        borderRadius: "50px",
-                        backgroundColor: "rgba(211, 47, 47, 0.9)",
-                        "&:hover": {
-                          backgroundColor: "rgba(211, 47, 47, 1)",
-                        },
-                        width: "40%",
-                        fontWeight: "bold",
-                      }}
-                      onClick={handleDecline}
-                    >
-                      Refuser
-                    </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        sx={{
+                          borderRadius: "50px",
+                          backgroundColor: "rgba(211, 47, 47, 0.9)",
+                          "&:hover": {
+                            backgroundColor: "rgba(211, 47, 47, 1)",
+                          },
+                          width: "40%",
+                          fontWeight: "bold",
+                        }}
+                        onClick={() => handleTalkState(false, talk.id)}
+                      >
+                        Refuser
+                      </Button>
+                    </>
                   )}
                 </div>
               </>

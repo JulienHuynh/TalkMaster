@@ -3,7 +3,6 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Homepage from "./pages/Homepage.tsx";
 import Login from "./components/auth/Login.tsx";
-import TalkManagement from "./components/organizer/talk_management/TalkManagement.tsx";
 import { defaultTalk } from "./constante/talk.ts";
 import { CreateTalk } from "./pages/create-or-edit-talk.tsx";
 import { Talk } from "./pages/talk-home.tsx";
@@ -15,7 +14,6 @@ import Planning from "./components/organizer/Planning.tsx";
 const App = () => {
   return (
     <>
-      <div className="w-3/5 mx-auto">
         <Router>
           <Routes>
             <Route path="/" element={<Homepage />} />
@@ -52,10 +50,11 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/talk-management" element={<TalkManagement />} />
+            <Route path="/organizer/overview" element={<Overview />} />
+            <Route path="/organizer/planning" element={<Planning />} />
+            <Route path="/organizer/management" element={<Management />} />
           </Routes>
         </Router>
-      </div>
     </>
   );
 };
