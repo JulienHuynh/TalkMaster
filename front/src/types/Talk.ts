@@ -6,13 +6,13 @@ import type { User } from "./User.ts";
 export type Talk = {
   id: number;
   title: string;
-  description?: string | null;
+  description: string | null;
   date?: Date;
   duration: number;
   subject: string;
   status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   roomId: number;
   userId: string;
   room?: Room;
@@ -20,3 +20,5 @@ export type Talk = {
   Favorite?: Favorite[];
   Slot?: Slot[];
 };
+
+export type CreateTalkProps = Omit<Talk, "id" | "createdAt" | "updatedAt">;

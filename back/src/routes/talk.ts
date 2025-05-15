@@ -47,7 +47,10 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       req: Request<{
         title: string;
         description: string;
+        subject: string;
         status: string;
+        date: Date;
+        duration: number;
         roomId: number;
         userId: string;
       }>,
@@ -56,7 +59,10 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       const {
         title,
         description,
+        subject,
         status = "pending",
+        date,
+        duration,
         roomId,
         userId,
       } = req.body;
@@ -72,7 +78,10 @@ export default function talksRoutes(prisma: PrismaClient): Router {
           data: {
             title,
             description,
+            subject,
             status,
+            date,
+            duration,
             roomId,
             userId,
           },
