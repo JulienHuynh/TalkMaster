@@ -1,3 +1,7 @@
+import { IoChevronBack, IoPencil, IoTrash } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+import type { MouseEvent } from "react";
+import type { TalkProps } from "../type/talk.type";
 import {
   Box,
   Card,
@@ -6,10 +10,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import type { MouseEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import type { TalkProps } from "../type/talk.type";
-import { IoChevronBack, IoPencil, IoTrash } from "react-icons/io5";
 
 const mockTalks: TalkProps[] = [
   {
