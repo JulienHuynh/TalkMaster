@@ -73,8 +73,13 @@ export function useApiQuery<T>(
       .finally(() => setLoading(false));
   };
 
-  return [fetchApi, {
-    data, loading, error,
-    token: undefined
-  }];
+  return [
+    fetchApi,
+    {
+      data,
+      loading,
+      error,
+      token: undefined,
+    },
+  ];
 }
