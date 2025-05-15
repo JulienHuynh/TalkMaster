@@ -17,7 +17,7 @@ export const useGetTalks = () => {
     url: `${import.meta.env.VITE_API_HOST}/talks/`,
   };
 
-  const { data, isLoading, error } = useApi<Talk>(options, ["talks"]);
+  const { data, isLoading, error } = useApi<Talk[]>(options, ["talks"]);
 
   //   console.log(data);
 
