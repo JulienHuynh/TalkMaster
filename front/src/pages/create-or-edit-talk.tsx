@@ -24,7 +24,7 @@ export const CreateTalk = ({ talk }: CreateTalkProps) => {
   const [date, setDate] = useState<string | null>(null);
   const [subject, setSubject] = useState<string>(talk?.subject || "");
   const [description, setDescription] = useState<string>(
-    talk?.description || ""
+    talk?.description || "",
   );
   const [title, setTitle] = useState<string>(talk?.title || "");
 
