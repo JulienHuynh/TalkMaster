@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import type * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import useUpdateStateTalk from "../../hooks/useUpdateStateTalk.ts";
@@ -6,6 +7,7 @@ import TalkCard from "../card/TalkCard.tsx";
 
 const Management: React.FC = () => {
   const [talkRequests, setTalkRequests] = useState<Talk[]>([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   const token = document.cookie
     .split("; ")
@@ -26,6 +28,12 @@ const Management: React.FC = () => {
     })
       .then((response) => {
         if (!response.ok) {
+          enqueueSnackbar(
+            "Erreur lors du chargement des demandes de talk",
+            {
+              variant: "error",
+            },
+          );
           return Promise.reject(
             "Erreur lors du chargement des demandes de talk",
           );
@@ -35,7 +43,7 @@ const Management: React.FC = () => {
       .then((data) => {
         setTalkRequests(data);
       });
-  }, [token]);
+  }, [token, enqueueSnackbar]);
 
   useEffect(() => {
     fetchTalkRequests();
@@ -63,12 +71,13 @@ const Management: React.FC = () => {
       talkId,
       roomId,
       slotsIndex,
-    }).then((res) => {
-      if (!res.ok) {
-        return;
-      }
+    }).then(() => {
       const updatedTalks = talkRequests.filter((talk) => talk.id !== talkId);
       setTalkRequests(updatedTalks);
+    }).catch((error) => {
+      enqueueSnackbar(`${error}`, {
+        variant: "error",
+      });
     });
   };
 

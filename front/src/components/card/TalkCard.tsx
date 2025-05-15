@@ -107,16 +107,6 @@ const TalkCard: React.FC<TalkCardProps> = ({
     return formatTime(endTime);
   };
 
-  // // Get selected room name
-  // const getSelectedRoomName = () => {
-  //   const selectedRoom = availableRooms.find(
-  //     (room) => room.id === selectedSlot
-  //   );
-  //   return selectedRoom
-  //     ? `Salle ${selectedRoom.id}`
-  //     : "Aucune salle sélectionnée";
-  // };
-
   // Room icons
   const roomIcons = [
     <TbCircleNumber1Filled key="room1" size="30" />,
@@ -141,9 +131,8 @@ const TalkCard: React.FC<TalkCardProps> = ({
         throw new Error("Token manquant dans les cookies");
       }
 
-      const url = `${
-        import.meta.env.VITE_API_HOST
-      }/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
+      const url = `${import.meta.env.VITE_API_HOST
+        }/slots?roomId=${roomId}&date=${date}&duration=${duration}`;
 
       const response = await fetch(url, {
         method: "GET",

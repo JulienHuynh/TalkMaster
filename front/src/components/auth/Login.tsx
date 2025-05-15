@@ -5,6 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
+import { useSnackbar } from "notistack";
 import { type FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AuthLayout from "./Layout";
@@ -15,6 +16,7 @@ const useQuery = () => {
 
 const Login: FC = () => {
   const [authMethod, setAuthMethod] = useState("speaker");
+  const { enqueueSnackbar } = useSnackbar();
 
   const query = useQuery();
   const privateAuth = query.get("private") === "true";
@@ -26,7 +28,6 @@ const Login: FC = () => {
   }): Promise<void> => {
     await fetch(`${import.meta.env.VITE_API_HOST}/users/login`, {
       method: "POST",
-      // mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
@@ -34,8 +35,10 @@ const Login: FC = () => {
     })
       .then((res) => {
         if (!res.ok) {
-          return res.text().then((text) => {
-            throw new Error(text || `Erreur ${res.status}`);
+          return res.json().then((error) => {
+            enqueueSnackbar(error.message || "Erreur lors de la connexion", {
+              variant: "error",
+            });
           });
         }
         return res.json();
@@ -44,7 +47,13 @@ const Login: FC = () => {
         if (data.token) {
           document.cookie = `token=${data.token}; path=/; max-age=86400;`;
           handleLogin();
+          enqueueSnackbar("Connexion réussie", {
+            variant: "success",
+          });
         } else {
+          enqueueSnackbar("Identifiants incorrects", {
+            variant: "error",
+          });
           throw new Error("Identifiants incorrects");
         }
       });
@@ -91,9 +100,8 @@ const Login: FC = () => {
           <Typography className="text-center">
             {!privateAuth
               ? "Connectez-vous afin de consulter les conférences à venir. "
-              : `Connectez-vous en tant que ${
-                  authMethod === "organizer" ? "organisateur" : "conférencier"
-                } afin d'organiser le programme.`}
+              : `Connectez-vous en tant que ${authMethod === "organizer" ? "organisateur" : "conférencier"
+              } afin d'organiser le programme.`}
           </Typography>
           <div className="flex flex-col gap-2 w-full">
             <form
