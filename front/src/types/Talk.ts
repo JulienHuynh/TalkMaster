@@ -1,7 +1,7 @@
-import type { Room } from "./Room.ts";
-import type { User } from "./User.ts";
 import type { Favorite } from "./Favorite.ts";
+import type { Room } from "./Room.ts";
 import type { Slot } from "./Slot.ts";
+import type { User } from "./User.ts";
 
 export type Talk = {
   id: number;

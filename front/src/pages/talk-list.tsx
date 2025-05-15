@@ -7,12 +7,12 @@ import {
   Typography,
 } from "@mui/material";
 import type { MouseEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import type { Talk } from "../types/Talk";
+import { useEffect, useState } from "react";
 import { IoChevronBack, IoPencil, IoTrash } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/talk/navbar";
 import useGetTalkRequests from "../hooks/useGetTalkRequests";
-import { useEffect, useState } from "react";
+import type { Talk } from "../types/Talk";
 
 export const TalkList = () => {
   const navigate = useNavigate();
@@ -27,14 +27,13 @@ export const TalkList = () => {
           setTalks(data);
         })
         .catch((err) => {
-          console.error("Erreur de récupération des talks", err);
+          return err;
         });
     };
     getTalkRequests();
-  }, []);
+  }, [Talks]);
 
   const handleEdit = (e: MouseEvent, id: number) => {
-    console.log("Talks id", id);
     e.stopPropagation();
     navigate(`/edit-talk/${id}`);
   };

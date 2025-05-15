@@ -1,4 +1,4 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export const useApi = <TResult>(
   options: RequestInit & { url: string } = { url: "" },
@@ -6,7 +6,7 @@ export const useApi = <TResult>(
   queryOption?: Omit<
     UseQueryOptions<TResult, Error, TResult, unknown[]>,
     "queryKey" | "queryFn"
-  >
+  >,
 ): { error?: Error; isLoading: boolean; data?: TResult } => {
   const token = document.cookie
     .split("; ")
@@ -26,10 +26,9 @@ export const useApi = <TResult>(
     if (res.status !== 200 && res.status !== 201) {
       const error = await res.json();
       throw error;
-    } else {
-      const data = await res.json();
-      return data;
     }
+    const data = await res.json();
+    return data;
   };
 
   const { isLoading, data, error } = useQuery<

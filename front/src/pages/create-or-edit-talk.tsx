@@ -1,19 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
-import { TalkForm } from "../components/talk/talk-form";
 import { IoChevronBack } from "react-icons/io5";
-import type { CreateTalkProps } from "../types/Talk";
-import { defaultTalk } from "../constante/talk";
+import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/talk/footer";
 import Navbar from "../components/talk/navbar";
+import { TalkForm } from "../components/talk/talk-form";
+import { defaultTalk } from "../constante/talk";
 import useCreateTalk from "../hooks/useCreateTalk";
 import { useGetTalk } from "../hooks/useGetTalkRequests";
+import type { CreateTalkProps } from "../types/Talk";
 
 export const CreateTalk = () => {
   const { createTalk } = useCreateTalk();
   const location = useLocation();
   const isCreatePage = location.pathname === "/create-talk";
 
-  const talkId = parseInt(location.pathname.split("/").pop() || "");
+  const talkId = Number.parseInt(location.pathname.split("/").pop() || "");
 
   const { talkData } = useGetTalk(talkId);
 
@@ -21,8 +21,7 @@ export const CreateTalk = () => {
     if (talkId) {
       // update talk
     } else {
-      const newTalk = await createTalk(formData);
-      console.log("New talk:", newTalk);
+      await createTalk(formData);
     }
   };
 
@@ -45,7 +44,7 @@ export const CreateTalk = () => {
               talk={(talkData || defaultTalk) as CreateTalkProps}
               onSubmit={handleSubmit}
               onCancel={handleCancel}
-              isEdit={talkId ? true : false}
+              isEdit={!!talkId}
             />
           </div>
         </div>

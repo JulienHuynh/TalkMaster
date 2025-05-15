@@ -1,6 +1,6 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import type React from "react";
 import { IoChatbubblesOutline, IoNotificationsOutline } from "react-icons/io5";
+import { Link, useLocation } from "react-router-dom";
 const Footer: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;

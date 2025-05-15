@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/authContext";
-import Navbar from "../components/talk/navbar";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import Navbar from "../components/talk/navbar";
+import { useAuth } from "../context/authContext";
 
 export const Talk = () => {
   const { logout } = useAuth();

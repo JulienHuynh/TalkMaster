@@ -1,7 +1,7 @@
-import React from "react";
-import Navbar from "./navbar";
-import Footer from "./footer";
 import { Box } from "@mui/material";
+import type React from "react";
+import Footer from "./footer";
+import Navbar from "./navbar";
 
 interface LayoutProps {
   children: React.ReactNode;

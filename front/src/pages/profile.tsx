@@ -1,5 +1,5 @@
+import { Avatar, Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import { Typography, Button, Avatar, Stack } from "@mui/material";
 import { IoChevronBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/talk/navbar";
@@ -14,6 +14,7 @@ export const Profile = () => {
       <div className="mt-20">
         <div className="flex  items-center mt-8">
           <button
+            type="button"
             onClick={() => navigate(-1)}
             className="text-white p-2 rounded-full hover:bg-gray-700 mr-2 transition-colors"
           >
