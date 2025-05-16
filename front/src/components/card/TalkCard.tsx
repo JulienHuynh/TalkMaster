@@ -372,9 +372,9 @@ const TalkCard: React.FC<TalkCardProps> = ({
                           >
                             <IconButton
                               sx={{
-                                "&.disabled": {
-                                  opacity: 0.5,
+                                "&:disabled": {
                                   pointerEvents: "none",
+                                  bgcolor: "rgba(255, 255, 255, 0.3)",
                                 },
                                 padding: 1,
                                 backgroundColor:
