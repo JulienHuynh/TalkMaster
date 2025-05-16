@@ -76,13 +76,14 @@ export const TalkList = () => {
               <Typography variant="body2" color="text.secondary">
                 {talk.date
                   ? new Date(talk.date).toLocaleDateString("fr-FR", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                  : ""}{" "} pour une durée de {talk.duration * 15} minutes
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : ""}{" "}
+                pour une durée de {talk.duration * 15} minutes
               </Typography>
             </CardContent>
 

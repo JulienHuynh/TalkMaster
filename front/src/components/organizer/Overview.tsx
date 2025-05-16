@@ -122,44 +122,42 @@ const Overview: React.FC = () => {
   //   fetchTalks();
   // }, []);
 
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
 
+  const fetchTalkRequests = useCallback(() => {
+    if (!token) {
+      return;
+    }
 
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
-  
-    const fetchTalkRequests = useCallback(() => {
-      if (!token) {
-        return;
-      }
-  
-      fetch(`${import.meta.env.VITE_API_HOST}/talks/pending-requests`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    fetch(`${import.meta.env.VITE_API_HOST}/talks/pending-requests`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          enqueueSnackbar("Erreur lors du chargement des demandes de talk", {
+            variant: "error",
+          });
+          return Promise.reject(
+            "Erreur lors du chargement des demandes de talk",
+          );
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            enqueueSnackbar("Erreur lors du chargement des demandes de talk", {
-              variant: "error",
-            });
-            return Promise.reject(
-              "Erreur lors du chargement des demandes de talk",
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setTalkRequests(data);
-        });
-    }, [token, enqueueSnackbar]);
-  
-    useEffect(() => {
-      fetchTalkRequests();
-    }, [fetchTalkRequests]);
+      .then((data) => {
+        setTalkRequests(data);
+      });
+  }, [token, enqueueSnackbar]);
+
+  useEffect(() => {
+    fetchTalkRequests();
+  }, [fetchTalkRequests]);
 
   return (
     <div>
