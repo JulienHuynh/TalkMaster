@@ -94,9 +94,6 @@ export const TalkForm: React.FC<TalkFormProps> = ({
       autoComplete="off"
       gap={1}
     >
-      <button type="button" onClick={() => validateDate(date)}>
-        coucou
-      </button>
       <Typography
         variant="h5"
         component="h1"
