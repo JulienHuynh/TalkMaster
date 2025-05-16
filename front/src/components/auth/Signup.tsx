@@ -80,8 +80,8 @@ const Signup: FC = () => {
           }}
           aria-label="Platform"
         >
-          <ToggleButton sx={{ width: "130px" }} value="classic">
-            Classic
+          <ToggleButton sx={{ width: "130px" }} value="public">
+            Public
           </ToggleButton>
           <ToggleButton sx={{ width: "130px" }} value="speaker">
             Conférencier

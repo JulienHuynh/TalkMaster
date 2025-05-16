@@ -20,10 +20,11 @@ export default function usersRoutes(prisma: PrismaClient): Router {
         password: string;
         firstName: string;
         lastName: string;
+        role?: string; 
       }>,
       res: any,
     ) => {
-      const { email, password, firstName, lastName } = req.body;
+      const { email, password, firstName, lastName, role } = req.body;
 
       const existingUser = await prisma.user.findUnique({
         where: {
@@ -44,6 +45,7 @@ export default function usersRoutes(prisma: PrismaClient): Router {
             password: hashedPassword,
             firstName,
             lastName,
+            role: role || "public"
           },
         })
         .then(
@@ -52,12 +54,14 @@ export default function usersRoutes(prisma: PrismaClient): Router {
             email: string;
             firstName: string;
             lastName: string;
+            role: string;
           }) => {
             res.status(201).json({
               id: user.id,
               email: user.email,
               firstName: user.firstName,
               lastName: user.lastName,
+              role: user.role,
             });
           },
         )
