@@ -45,12 +45,12 @@ const Signup: FC = () => {
         return res.json();
       })
       .then((data) => {
-        if(data) {
+        if (data) {
           enqueueSnackbar("Inscription réussie !", { variant: "success" });
           // Redirect to login or home page
-          navigate('/login');
+          navigate("/login");
         }
-      })
+      });
   };
 
   const [signup, setSignup] = useState({
