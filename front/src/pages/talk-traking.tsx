@@ -67,12 +67,6 @@ const TalkTracking = () => {
           En attente
         </Button>
         <Button
-          onClick={() => setSelectedStatus("accepted")}
-          variant={selectedStatus === "accepted" ? "contained" : "outlined"}
-        >
-          Acceptés
-        </Button>
-        <Button
           onClick={() => setSelectedStatus("rejected")}
           variant={selectedStatus === "rejected" ? "contained" : "outlined"}
         >
@@ -129,7 +123,15 @@ const TalkTracking = () => {
                 {talk.subject}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Date et durée de la conférence
+                {talk.date
+                  ? new Date(talk.date).toLocaleDateString("fr-FR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                  : ""}{" "} pour une durée de {talk.duration * 15} minutes
               </Typography>
             </CardContent>
           </Card>

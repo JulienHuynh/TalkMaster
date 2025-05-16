@@ -9,7 +9,7 @@ export const Talk = () => {
       <button type="button" onClick={logout}>
         Logout
       </button>
-      <h1 className="text-xl font-bold mb-8 text-white">
+      <h1 className="text-xl font-bold mb-8 text-white text-center">
         Bienvenue sur TalksCenter
       </h1>
       <p className="text-gray-300 mb-8 text-center max-w-md">

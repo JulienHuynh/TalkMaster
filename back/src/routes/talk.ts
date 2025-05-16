@@ -16,6 +16,15 @@ export default function talksRoutes(prisma: PrismaClient): Router {
         where: {
           status: "pending",
         },
+        include: {
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
       });
 
       res.json(talksPending);
@@ -49,6 +58,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
         title: string;
         description: string;
         status?: string;
+        subject?: string;
         date: Date;
         duration: number;
         roomId: number;
@@ -59,6 +69,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
       const {
         title,
         description,
+        subject = "tech",
         status = "pending",
         roomId,
         duration,
@@ -78,6 +89,7 @@ export default function talksRoutes(prisma: PrismaClient): Router {
             title,
             description,
             status,
+            subject,
             roomId,
             duration,
             date: new Date(date),

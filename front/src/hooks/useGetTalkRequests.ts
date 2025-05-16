@@ -23,7 +23,7 @@ export default function useGetTalkRequests() {
 export const useGetTalks = () => {
   const options = {
     method: "GET",
-    url: `${import.meta.env.VITE_API_HOST}/talks/`,
+    url: `${import.meta.env.VITE_API_HOST}/talks`,
   };
 
   const { data, isLoading, error } = useApi<Talk[]>(options, ["talks"]);

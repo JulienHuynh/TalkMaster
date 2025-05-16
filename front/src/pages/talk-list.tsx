@@ -74,7 +74,15 @@ export const TalkList = () => {
                 {talk.subject}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Date et durée de la conférence
+                {talk.date
+                  ? new Date(talk.date).toLocaleDateString("fr-FR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                  : ""}{" "} pour une durée de {talk.duration * 15} minutes
               </Typography>
             </CardContent>
 
