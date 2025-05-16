@@ -20,7 +20,7 @@ export default function usersRoutes(prisma: PrismaClient): Router {
         password: string;
         firstName: string;
         lastName: string;
-        role?: string; 
+        role?: string;
       }>,
       res: any,
     ) => {
@@ -45,7 +45,7 @@ export default function usersRoutes(prisma: PrismaClient): Router {
             password: hashedPassword,
             firstName,
             lastName,
-            role: role || "public"
+            role: role || "public",
           },
         })
         .then(
