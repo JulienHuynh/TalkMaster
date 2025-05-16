@@ -7,11 +7,13 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
 import { type FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthLayout from "./Layout";
 
 const Signup: FC = () => {
   const [signupMethod, setSignupMethod] = useState("public");
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const fetchSignup = async ({
     body,
@@ -43,19 +45,12 @@ const Signup: FC = () => {
         return res.json();
       })
       .then((data) => {
-        if (data.token) {
-          document.cookie = `token=${data.token}; path=/; max-age=86400;`;
-          window.location.href = "/login";
-          enqueueSnackbar("Inscription réussie", {
-            variant: "success",
-          });
-        } else {
-          enqueueSnackbar("Identifiants incorrects", {
-            variant: "error",
-          });
-          throw new Error("Identifiants incorrects");
+        if(data) {
+          enqueueSnackbar("Inscription réussie !", { variant: "success" });
+          // Redirect to login or home page
+          navigate('/login');
         }
-      });
+      })
   };
 
   const [signup, setSignup] = useState({
